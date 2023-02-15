@@ -19,7 +19,7 @@ const SplashScreen = () => {
   }, []);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView className='bg-primary h-full'>
       <View className='flex h-full justify-center items-center bg-primary '>
         <Image source={images.splash} />
       </View>

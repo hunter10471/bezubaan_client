@@ -1,10 +1,7 @@
+import { IOnboardingItem } from '../../interfaces/OnboardingItem.interface';
 import images from '../images';
 
-const slides: {
-  title: string;
-  description: string;
-  image: string;
-}[] = [
+const slides: IOnboardingItem[] = [
   {
     title: 'Looking for a vet?',
     description:

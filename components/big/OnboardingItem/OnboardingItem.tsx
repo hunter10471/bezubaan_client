@@ -6,6 +6,7 @@ import {
   useWindowDimensions,
 } from 'react-native';
 import React from 'react';
+import images from '../../../assets/images';
 
 interface IOnboardingItemProps {
   title: string;
@@ -21,19 +22,30 @@ const OnboardingItem = ({
   const dimensions = useWindowDimensions();
 
   return (
-    <View className='relative'>
+    <View className='relative h-full'>
       <Image
         style={[
           {
             width: dimensions.width,
-            height: dimensions.height,
+            height: '60%',
+            resizeMode: 'cover',
           },
         ]}
         source={image as ImageSourcePropType}
       />
-      <View className='absolute flex flex-col gap-1 p-6 bottom-0 w-full min-h-[280px] '>
+
+      <View className='absolute flex flex-col gap-1 p-6 bottom-0 w-full h-[40%] bg-white  '>
+        <Image
+          source={images.blur}
+          style={{
+            height: '100%',
+            position: 'absolute',
+            bottom: '40%',
+            transform: [{ rotate: '-180deg' }],
+          }}
+        />
         <Text className='text-primary font-bold text-3xl'>{title}</Text>
-        <Text className='text-gray-700'>{description}</Text>
+        <Text className='text-gray-700  '>{description}</Text>
       </View>
     </View>
   );
