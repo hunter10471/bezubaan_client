@@ -19,6 +19,7 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { Gender, IUser } from '../interfaces/User.interface';
 import { createUser } from '../api/user.api';
+import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
 
 const SignupScreen = () => {
   const dimensions = useWindowDimensions();
@@ -117,6 +118,15 @@ const SignupScreen = () => {
             Create Account
           </Text>
         </TouchableOpacity>
+        <Text className='text-center text-gray-400 font-bold mb-5'>
+            OR
+          </Text>
+        <View className='flex flex-row justify-center mb-5'>
+          <SocialLoginButton color='#4267B2' type='facebook' />
+          <SocialLoginButton color='#d62d20' type='google' />
+          <SocialLoginButton color='#00acee' type='twitter' />
+        </View>
+      
         <TouchableOpacity onPress={onPressLoginNavigate}>
           <Text className='text-center text-gray-400 font-bold'>
             Already have an account?

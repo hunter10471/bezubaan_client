@@ -73,7 +73,7 @@ const OnboardingScreen = () => {
         {index === 2 ? (
           <Pressable
             onPress={onPress}
-            className={`bg-primary w-[80%] py-4 text-center rounded-[10px] absolute bottom-6 left-[10%] `}
+            className={`bg-primary w-[80%] py-4 text-center rounded-[10px] absolute bottom-16 left-[10%] `}
           >
             <Text className='text-white  text-center font-bold '>
               {' '}

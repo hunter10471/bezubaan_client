@@ -7,7 +7,13 @@ export enum Gender {
 export interface IUser {
   username: string;
   email: string;
-  password: string;
   gender: Gender;
   avatar: string;
+  dateOfBirth:Date;
 }
+
+export interface IUserInitialState extends Partial<IUser> {
+
+}
+
+

@@ -16,6 +16,7 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { loginUser } from '../api/user.api';
+import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
 
 const LoginScreen = () => {
   const dimensions = useWindowDimensions();
@@ -81,6 +82,14 @@ const LoginScreen = () => {
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
           <Text className='text-center text-white font-bold'>Submit</Text>
         </TouchableOpacity>
+        <Text className='text-center text-gray-400 font-bold mb-5'>
+            OR
+          </Text>
+        <View className='flex flex-row justify-center mb-5'>
+          <SocialLoginButton color='#4267B2' type='facebook' />
+          <SocialLoginButton color='#d62d20' type='google' />
+          <SocialLoginButton color='#00acee' type='twitter' />
+        </View>
         <TouchableOpacity onPress={onPressSignupNavigate}>
           <Text className='text-center text-gray-400 font-bold'>
             Don't have an account?

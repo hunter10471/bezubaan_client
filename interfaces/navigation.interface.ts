@@ -4,4 +4,5 @@ export type RootStackParamList = {
   OnBoardingScreen: { id: number } | undefined;
   SignupScreen: { id: number } | undefined;
   LoginScreen: { id: number } | undefined;
+  ProfileScreen: { id: number } | undefined;
 };

@@ -21,6 +21,9 @@ import VetCard from '../components/medium/VetCard/VetCard';
 import MapView from 'react-native-maps';
 import badges from '../assets/data/badges';
 import HomeCategoryBadge from '../components/small/HomeCategoryBadge/HomeCategoryBadge';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../interfaces/navigation.interface';
+import { useNavigation } from '@react-navigation/native';
 
 const HomeScreen = () => {
   const [mapRegion, setmapRegion] = useState({
@@ -29,14 +32,20 @@ const HomeScreen = () => {
     latitudeDelta: 0.0922,
     longitudeDelta: 0.0421,
   });
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const onProfileTap = () => {
+    navigation.navigate('ProfileScreen', undefined)
+  }
   return (
-    <SafeAreaView style={{ flex: 1 }} className='bg-white h-full '>
+    <SafeAreaView style={{ flex: 1 }} className='bg-white'>
+      <ScrollView>
+
       <View className='flex mx-6 my-4 '>
         <View className='flex flex-row justify-between'>
           <Text className='text-primary text-2xl font-bold w-[50%]'>
             What are you looking for ?
           </Text>
-          <TouchableOpacity>
+          <TouchableOpacity onPress={onProfileTap} >
             <Image style={styles.avatar} source={images.default_avatar} />
           </TouchableOpacity>
         </View>
@@ -53,7 +62,8 @@ const HomeScreen = () => {
             justifyContent: 'space-around',
             marginBottom: 20,
           }}
-        />
+          />
+        
         <FlatList
           horizontal
           showsHorizontalScrollIndicator={false}
@@ -73,10 +83,10 @@ const HomeScreen = () => {
               latitudeDelta: 0.0922,
               longitudeDelta: 0.0421,
             }}
-          />
+            />
         </View>
       </View>
-      <View
+      {/* <View
         className='w-[80%] left-[10%] px-8 py-4 rounded-[25px] flex flex-row justify-between'
         style={styles.navbar}
       >
@@ -92,7 +102,8 @@ const HomeScreen = () => {
         <TouchableOpacity>
           <MaterialIcons3 name='menu' size={20} color={'#fff'} />
         </TouchableOpacity>
-      </View>
+      </View> */}
+        </ScrollView>
     </SafeAreaView>
   );
 };
@@ -106,7 +117,6 @@ const styles = StyleSheet.create({
     borderRadius: 100,
   },
   map: {
-    ...StyleSheet.absoluteFillObject,
     width: Dimensions.get('screen').width - 50,
     height: 200,
     marginRight: 60,

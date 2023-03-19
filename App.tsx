@@ -6,11 +6,16 @@ import OnboardingScreen from './screens/OnboardingScreen';
 import SignupScreen from './screens/SignupScreen';
 import LoginScreen from './screens/LoginScreen';
 import HomeScreen from './screens/HomeScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import { Provider } from 'react-redux';
+import { store } from './redux/store';
+
 
 export default function App() {
   const Stack = createNativeStackNavigator();
 
   return (
+    <Provider store={store}>
     <TailwindProvider>
       <NavigationContainer>
         <Stack.Navigator
@@ -18,14 +23,16 @@ export default function App() {
           screenOptions={{
             headerShown: false,
           }}
-        >
+          >
           <Stack.Screen name='SplashScreen' component={SplashScreen} />
           <Stack.Screen name='OnBoardingScreen' component={OnboardingScreen} />
           <Stack.Screen name='SignupScreen' component={SignupScreen} />
           <Stack.Screen name='LoginScreen' component={LoginScreen} />
           <Stack.Screen name='HomeScreen' component={HomeScreen} />
+          <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>
+          </Provider>
   );
 }

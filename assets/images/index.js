@@ -11,6 +11,10 @@ const images = {
   vet2: require('./vet2.jpeg'),
   vet3: require('./vet3.jpg'),
   vet4: require('./vet4.jpg'),
+  doctor: require('./doctor.jpg'),
+  care: require('./care.jpg'),
+  what_we_do: require('./what_we_do.jpg')
+
 };
 
 module.exports = images;
