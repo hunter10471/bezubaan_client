@@ -19,7 +19,7 @@ import MaterialIcons2 from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
-import { Gender, IUser } from '../interfaces/User.interface';
+import { Gender, IUser, RegisterUser } from '../interfaces/User.interface';
 import { createUser } from '../api/user.api';
 import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
 import { useFonts } from 'expo-font';
@@ -38,7 +38,7 @@ const SignupScreen = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [form, setForm] = useState<IUser>({
+  const [form, setForm] = useState<RegisterUser>({
     username: '',
     avatar: '',
     email: '',
@@ -56,9 +56,7 @@ const SignupScreen = () => {
           dispatch(login(user))
           setError(false);
           setSuccess(true);
-          setTimeout(() => {
-            navigation.navigate('HomeScreen', undefined);
-          }, 5000);
+          navigation.navigate('HomeScreen', undefined);
         }else throw new Error('There was an error signing up the user.')
       } catch (error) {
         console.log(error);
@@ -88,12 +86,12 @@ const SignupScreen = () => {
             resizeMode: 'cover',
           },
         ]}
-        source={images.signup}
+        source={images.welcome}
       />
       <ScrollView>
 
       <View className='m-4 mt-2'>
-        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-text'>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-primary'>
           Sign Up
         </Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
@@ -157,29 +155,6 @@ const SignupScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-
-      <Modal
-        animationType='slide'
-        transparent={true}
-        visible={success}
-        onRequestClose={() => {
-          setSuccess(success);
-        }}
-        >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              Your account has been created successfully. You will be redirected
-              to home.
-            </Text>
-            <Pressable onPress={() => setSuccess(!success)}>
-              <Text className='bg-primary px-4 py-2 text-white rounded-[10px]'>
-                Close
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal>
         </ScrollView>
         <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
         <MaterialIcons2 size={25} name='arrow-back' />

@@ -15,7 +15,12 @@ const userSlice = createSlice({
     initialState:initialState,
     reducers:{
         login:(state:IUserInitialState, action:PayloadAction<IUser>)=>{
-            state = action.payload;
+            const { _id, username, avatar, email, gender } = action.payload;
+            state._id = _id;
+            state.username = username;
+            state.avatar = avatar;
+            state.email = email;
+            state.gender = gender;
         },
         logout:(state:IUserInitialState)=>{
            let userDetails = Object.keys(initialState);

@@ -13,9 +13,6 @@ import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import MaterialIcons from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons2 from 'react-native-vector-icons/Octicons';
-import MaterialIcons3 from 'react-native-vector-icons/Ionicons';
-import MaterialIcons4 from 'react-native-vector-icons/Feather';
 import vets from '../assets/data/vets';
 import VetCard from '../components/medium/VetCard/VetCard';
 import MapView from 'react-native-maps';
@@ -27,6 +24,8 @@ import { useNavigation } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import NormalHeading from '../components/small/NormalHeading/NormalHeading';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const HomeScreen = () => {
   const [mapRegion, setmapRegion] = useState({
@@ -36,6 +35,8 @@ const HomeScreen = () => {
     longitudeDelta: 0.0421,
   });
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const authState = useSelector((state:RootState) => state.user)
+  console.log(authState)
   const onProfileTap = () => {
     navigation.navigate('ProfileScreen', undefined)
   }
@@ -52,7 +53,7 @@ const HomeScreen = () => {
 
       <View className='flex mx-6 my-4 '>
         <View className='flex flex-row justify-between'>
-          <NormalHeading text='What are you looking for ?' takesHalf />
+          <NormalHeading text={authState.username ? `Hey there, ${authState.username}` : 'What are you looking for ?'} takesHalf />
           <TouchableOpacity onPress={onProfileTap} >
             <Image style={styles.avatar} source={images.default_avatar} />
           </TouchableOpacity>

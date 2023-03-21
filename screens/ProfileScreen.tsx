@@ -7,12 +7,16 @@ import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { StackNavigationProp } from '@react-navigation/stack';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const ProfileScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const authState = useSelector(( state:RootState ) => state.user );
     const onBackPress = () => {
         navigation.navigate('HomeScreen',undefined)
     }
+    console.log(authState)
   return (
     <SafeAreaView style={{flex:1}} className='bg-white h-full'>
         <View className='flex items-center justify-center  bg-primary py-12'>
@@ -38,11 +42,11 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         </View>
         <View className='flex-1 items-center pt-10'>
-            <InputWithLabel label='Username' />
-            <InputWithLabel label='Email' />
-            <InputWithLabel label='Phone' />
-            <InputWithLabel label='Gender' />
-            <InputWithLabel label='Date Of Birth' />
+            <InputWithLabel defaultValue={authState.username} label='Username' />
+            <InputWithLabel defaultValue={authState.email} label='Email' />
+            <InputWithLabel defaultValue={authState.phone} label='Phone' />
+            <InputWithLabel defaultValue={authState.gender} label='Gender' />
+            <InputWithLabel defaultValue={authState.dateOfBirth && authState.dateOfBirth.toDateString()} label='Date Of Birth' />
         </View>
     </SafeAreaView>
   )

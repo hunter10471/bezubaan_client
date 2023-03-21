@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   ActivityIndicator
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
@@ -23,6 +23,12 @@ import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
 import Alert from '../components/medium/Alert/Alert';
+import {
+  GoogleSignin,
+  GoogleSigninButton,
+  statusCodes,
+  } from '@react-native-google-signin/google-signin';
+
 
 const LoginScreen = () => {
   const dimensions = useWindowDimensions();
@@ -34,10 +40,13 @@ const LoginScreen = () => {
   const [success, setSuccess] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [loggedIn, setloggedIn] = useState(false);
+  const [userInfo, setUserInfo] = useState([]); 
   const [form, setForm] = useState<{ username: string; password: string }>({
     username: '',
     password: '',
   });
+
   const handleLogin = async () => {
     setLoading(true)
     try {
@@ -46,9 +55,7 @@ const LoginScreen = () => {
         dispatch(login(user))
         setError(false);
         setSuccess(true);
-        setTimeout(() => {
-          navigation.navigate('HomeScreen', undefined);
-        }, 5000);
+        navigation.navigate('HomeScreen', undefined);
       }else throw new Error('There was an error logging in the user.')
     } catch (error) {
       console.log(error);
@@ -57,9 +64,42 @@ const LoginScreen = () => {
     }
     setLoading(false)
   };
+
   const onPressSignupNavigate = () => {
     navigation.navigate('SignupScreen', undefined);
   };
+
+  // const signInWithGoogle = async () => {
+  //   try {
+  //     await GoogleSignin.hasPlayServices();
+  //     const {accessToken, idToken} = await GoogleSignin.signIn();
+  //     setloggedIn(true);
+  //   } catch (error) {
+  //     console.log(error)
+  //     setError(true)
+  //   }
+  // };
+
+  // const signOutWithGoogle = async () => {
+  //   try {
+  //     await GoogleSignin.revokeAccess();
+  //     await GoogleSignin.signOut();
+  //     setloggedIn(false);
+  //     setUserInfo([]);
+  //   } catch (error) {
+  //     console.error(error);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   GoogleSignin.configure({
+  //     scopes: ['email'],
+  //     webClientId:
+  //       '418977770929-g9ou7r9eva1u78a3anassxxxxxxx.apps.googleusercontent.com',
+  //     offlineAccess: true,
+  //   });
+  // }, []);
+
   if(!fontsLoaded){
     return <AppLoading/>
   }
@@ -73,10 +113,10 @@ const LoginScreen = () => {
             resizeMode: 'cover',
           },
         ]}
-        source={images.login}
+        source={images.playful_cat}
       />
       <View className='m-4 mt-4'>
-        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-text'>Login</Text>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-primary'>Login</Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
           Enter your details below to login to your bezubaan account.
         </Text>
@@ -86,6 +126,7 @@ const LoginScreen = () => {
             className='w-full'
             placeholder='Username'
             keyboardType='default'
+            onChangeText={(text) => setForm({...form, username:text}) }
           />
         </View>
 
@@ -95,6 +136,7 @@ const LoginScreen = () => {
             placeholder='Password'
             secureTextEntry={true}
             className='w-full'
+            onChangeText={(text) => setForm({...form, password:text}) }
           />
         </View>
 

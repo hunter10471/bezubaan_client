@@ -13,8 +13,10 @@ const images = {
   vet4: require('./vet4.jpg'),
   doctor: require('./doctor.jpg'),
   care: require('./care.jpg'),
-  what_we_do: require('./what_we_do.jpg')
-
+  what_we_do: require('./what_we_do.jpg'),
+  welcome: require('./welcome.png'),
+  walking_dog: require('./walking_dog.png'),
+  playful_cat: require('./playful_cat.png'),
 };
 
 module.exports = images;
