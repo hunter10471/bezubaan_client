@@ -8,6 +8,8 @@ import {
   TouchableOpacity,
   View,
   useWindowDimensions,
+  ActivityIndicator,
+  ScrollView
 } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -20,15 +22,22 @@ import { RootStackParamList } from '../interfaces/navigation.interface';
 import { Gender, IUser } from '../interfaces/User.interface';
 import { createUser } from '../api/user.api';
 import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import Alert from '../components/medium/Alert/Alert';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slices/userSlice';
 
 const SignupScreen = () => {
   const dimensions = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch();
   const [confirmPassword, setConfirmPassword] = useState<string>('');
   const [confirmPasswordError, setConfirmPasswordError] =
     useState<boolean>(false);
   const [success, setSuccess] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [form, setForm] = useState<IUser>({
     username: '',
     avatar: '',
@@ -37,28 +46,40 @@ const SignupScreen = () => {
     password: '',
   });
   const handleSubmitForm = async () => {
+    setLoading(true)
     if (confirmPassword !== form.password) {
       setConfirmPasswordError(true);
     } else {
       try {
-        await createUser(form);
-        setError(false);
-        setSuccess(true);
-        setTimeout(() => {
-          navigation.navigate('HomeScreen', undefined);
-        }, 5000);
+        const user = await createUser(form);
+        if(user){
+          dispatch(login(user))
+          setError(false);
+          setSuccess(true);
+          setTimeout(() => {
+            navigation.navigate('HomeScreen', undefined);
+          }, 5000);
+        }else throw new Error('There was an error signing up the user.')
       } catch (error) {
         console.log(error);
         setError(true);
         setSuccess(false);
       }
     }
+    setLoading(false)
   };
   const onPressLoginNavigate = () => {
     navigation.navigate('LoginScreen', undefined);
   };
+  let [fontsLoaded] = useFonts({
+    'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
+    'poppins-regular': require('../assets/fonts/Poppins-Regular.ttf'),
+  })
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
-    <SafeAreaView className='bg-white h-full'>
+    <SafeAreaView className='bg-white flex-1'>
       <Image
         style={[
           {
@@ -69,12 +90,14 @@ const SignupScreen = () => {
         ]}
         source={images.signup}
       />
+      <ScrollView>
+
       <View className='m-4 mt-2'>
-        <Text className='text-3xl font-bold mx-2 mb-1 text-primary'>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-text'>
           Sign Up
         </Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
-          Enter your details below to create your bezuban account.
+          Enter your details below to create your bezubaan account.
         </Text>
         <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
           <MaterialIcons name='user-alt' size={15} color={'#666'} />
@@ -113,9 +136,10 @@ const SignupScreen = () => {
             onChangeText={(text) => setConfirmPassword(text)}
           />
         </View>
+       {error && <Alert text='There was an error signing you up.' type='error' />}
         <TouchableOpacity onPress={handleSubmitForm} style={styles.button}>
-          <Text className='text-center text-white font-bold'>
-            Create Account
+          <Text style={{fontFamily:'poppins-bold'}} className='text-center text-white'>
+          {loading ? <ActivityIndicator color='#fff' /> : 'Create Account' }
           </Text>
         </TouchableOpacity>
         <Text className='text-center text-gray-400 font-bold mb-5'>
@@ -133,9 +157,7 @@ const SignupScreen = () => {
           </Text>
         </TouchableOpacity>
       </View>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-        <MaterialIcons2 size={25} name='arrow-back' />
-      </TouchableOpacity>
+
       <Modal
         animationType='slide'
         transparent={true}
@@ -143,7 +165,7 @@ const SignupScreen = () => {
         onRequestClose={() => {
           setSuccess(success);
         }}
-      >
+        >
         <View style={styles.centeredView}>
           <View style={styles.modalView}>
             <Text style={styles.modalText}>
@@ -158,6 +180,10 @@ const SignupScreen = () => {
           </View>
         </View>
       </Modal>
+        </ScrollView>
+        <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
+        <MaterialIcons2 size={25} name='arrow-back' />
+      </TouchableOpacity>
     </SafeAreaView>
   );
 };

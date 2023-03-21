@@ -30,7 +30,7 @@ const PaginatorOnboarding = ({
         ];
         const dotWidth = scrollX.interpolate({
           inputRange,
-          outputRange: [10, 20, 10],
+          outputRange: [20, 40, 20],
           extrapolate: 'clamp',
         });
         return (
@@ -61,8 +61,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   dot: {
-    height: 10,
-    borderRadius: 5,
+    height: 15,
+    borderRadius: 100,
     marginHorizontal: 8,
   },
 });

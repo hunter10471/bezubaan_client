@@ -24,6 +24,9 @@ import HomeCategoryBadge from '../components/small/HomeCategoryBadge/HomeCategor
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { useNavigation } from '@react-navigation/native';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 
 const HomeScreen = () => {
   const [mapRegion, setmapRegion] = useState({
@@ -36,15 +39,20 @@ const HomeScreen = () => {
   const onProfileTap = () => {
     navigation.navigate('ProfileScreen', undefined)
   }
+  let [fontsLoaded] = useFonts({
+    'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
+    'poppins-regular': require('../assets/fonts/Poppins-Regular.ttf'),
+  })
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <SafeAreaView style={{ flex: 1 }} className='bg-white'>
       <ScrollView>
 
       <View className='flex mx-6 my-4 '>
         <View className='flex flex-row justify-between'>
-          <Text className='text-primary text-2xl font-bold w-[50%]'>
-            What are you looking for ?
-          </Text>
+          <NormalHeading text='What are you looking for ?' takesHalf />
           <TouchableOpacity onPress={onProfileTap} >
             <Image style={styles.avatar} source={images.default_avatar} />
           </TouchableOpacity>
@@ -65,15 +73,14 @@ const HomeScreen = () => {
           />
         
         <FlatList
+          style={{marginBottom:20}}
           horizontal
           showsHorizontalScrollIndicator={false}
           data={vets}
           renderItem={({ item }) => <VetCard vet={item} />}
         />
-        <Text className='text-xl my-4 font-bold text-primary'>
-          Find Nearby Vets
-        </Text>
-        <View>
+          <NormalHeading text='Find nearby vets' />
+        <View style={{marginTop:10}}>
           <MapView
             style={styles.map}
             region={mapRegion}

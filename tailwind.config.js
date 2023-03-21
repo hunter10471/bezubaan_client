@@ -9,7 +9,7 @@ module.exports = {
     extend: {
       colors: {
         primary: '#40B37C',
-        text: '#1A1B16',
+        text: '#191C20',
       },
       fontFamily: {
         heading_regular: ['Poppins-Regular', 'sans-serif'],

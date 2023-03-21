@@ -14,11 +14,16 @@ import PaginatorOnboarding from '../components/small/PaginatorOnboarding/Paginat
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 const OnboardingScreen = () => {
   const scrollX = useRef(new Animated.Value(0)).current;
   const [index, setIndex] = useState<number>(0);
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  let [fontsLoaded] = useFonts({
+    'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  })
 
   const onPress = () => {
     navigation.navigate('SignupScreen', undefined);
@@ -48,6 +53,9 @@ const OnboardingScreen = () => {
   const viewabilityConfig = useRef({
     itemVisiblePercentThreshold: 50,
   }).current;
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <SafeAreaView className='bg-white h-full'>
       <View className='h-full'>
@@ -75,7 +83,7 @@ const OnboardingScreen = () => {
             onPress={onPress}
             className={`bg-primary w-[80%] py-4 text-center rounded-[10px] absolute bottom-16 left-[10%] `}
           >
-            <Text className='text-white  text-center font-bold '>
+            <Text style={styles.button} className='text-white  text-center '>
               {' '}
               Get Started
             </Text>
@@ -85,7 +93,7 @@ const OnboardingScreen = () => {
             scrollX={scrollX}
             data={slides}
             currentIndex={index}
-          />
+            />
         )}
       </View>
     </SafeAreaView>
@@ -96,6 +104,6 @@ export default OnboardingScreen;
 
 const styles = StyleSheet.create({
   button: {
-    backgroundColor: '',
+    fontFamily:'poppins-bold'
   },
 });

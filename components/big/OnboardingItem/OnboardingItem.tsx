@@ -45,7 +45,7 @@ const OnboardingItem = ({
 
       <View className='absolute flex flex-col bottom-14 px-6 w-full h-[40%] bg-white  '>
         <Text style={styles.title}  className=' text-text  text-4xl text-center mb-10'>{title}</Text>
-        <Text className='text-gray-700 text-center font-medium text-[16px] leading-[26px]'>{description}</Text>
+        <Text className='text-gray-600 text-center font-medium text-[16px] leading-[26px]'>{description}</Text>
       </View>
     </View>
   );

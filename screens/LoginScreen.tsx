@@ -6,44 +6,63 @@ import {
   TouchableOpacity,
   View,
   useWindowDimensions,
+  ActivityIndicator
 } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
-import MaterialIcons from 'react-native-vector-icons/FontAwesome5';
-import MaterialIcons2 from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { loginUser } from '../api/user.api';
 import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
+import { useDispatch } from 'react-redux';
+import { login } from '../redux/slices/userSlice';
+import Alert from '../components/medium/Alert/Alert';
 
 const LoginScreen = () => {
   const dimensions = useWindowDimensions();
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const dispatch = useDispatch();
+  let [fontsLoaded] = useFonts({
+    'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
+  })
   const [success, setSuccess] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<boolean>(false);
   const [form, setForm] = useState<{ username: string; password: string }>({
     username: '',
     password: '',
   });
   const handleLogin = async () => {
+    setLoading(true)
     try {
-      await loginUser(form);
-      setError(false);
-      setSuccess(true);
-      setTimeout(() => {
-        navigation.navigate('HomeScreen', undefined);
-      }, 5000);
+      const user = await loginUser(form);
+      if(user){
+        dispatch(login(user))
+        setError(false);
+        setSuccess(true);
+        setTimeout(() => {
+          navigation.navigate('HomeScreen', undefined);
+        }, 5000);
+      }else throw new Error('There was an error logging in the user.')
     } catch (error) {
       console.log(error);
       setError(true);
       setSuccess(false);
     }
+    setLoading(false)
   };
   const onPressSignupNavigate = () => {
     navigation.navigate('SignupScreen', undefined);
   };
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <SafeAreaView className='bg-white h-full'>
       <Image
@@ -57,12 +76,12 @@ const LoginScreen = () => {
         source={images.login}
       />
       <View className='m-4 mt-4'>
-        <Text className='text-3xl font-bold mx-2 mb-1 text-primary'>Login</Text>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-text'>Login</Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
-          Enter your details below to login to your bezuban account.
+          Enter your details below to login to your bezubaan account.
         </Text>
         <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons name='user-alt' size={15} color={'#666'} />
+          <FontAwesome name='user-alt' size={15} color={'#666'} />
           <TextInput
             className='w-full'
             placeholder='Username'
@@ -71,7 +90,7 @@ const LoginScreen = () => {
         </View>
 
         <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons name='lock' size={15} color={'#666'} />
+          <FontAwesome name='lock' size={15} color={'#666'} />
           <TextInput
             placeholder='Password'
             secureTextEntry={true}
@@ -80,8 +99,9 @@ const LoginScreen = () => {
         </View>
 
         <TouchableOpacity onPress={handleLogin} style={styles.button}>
-          <Text className='text-center text-white font-bold'>Submit</Text>
+          <Text style={{fontFamily:'poppins-bold'}} className='text-center text-white'>{loading ? <ActivityIndicator color='#fff' /> : 'Submit' }</Text>
         </TouchableOpacity>
+        {error && <Alert text='There was an error logging you in.' type='error' /> }
         <Text className='text-center text-gray-400 font-bold mb-5'>
             OR
           </Text>
@@ -97,8 +117,30 @@ const LoginScreen = () => {
         </TouchableOpacity>
       </View>
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
-        <MaterialIcons2 size={25} name='arrow-back' />
+        <MaterialIcons size={25} name='arrow-back' />
       </TouchableOpacity>
+      {/* <Modal
+        animationType='slide'
+        transparent={true}
+        visible={success}
+        onRequestClose={() => {
+          setSuccess(success);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>
+              Your account has been created successfully. You will be redirected
+              to home.
+            </Text>
+            <Pressable onPress={() => setSuccess(!success)}>
+              <Text className='bg-primary px-4 py-2 text-white rounded-[10px]'>
+                Close
+              </Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal> */}
     </SafeAreaView>
   );
 };

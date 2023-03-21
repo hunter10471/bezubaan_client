@@ -8,12 +8,21 @@ import {
 } from 'react-native';
 import React from 'react';
 import { IVet } from '../../../interfaces/Vet.interface';
+import { useFonts } from 'expo-font';
+import AppLoading from 'expo-app-loading';
 
 interface IVetCardProps {
   vet: IVet;
 }
 
 const VetCard = ({ vet }: IVetCardProps) => {
+  let [fontsLoaded] = useFonts({
+    'poppins-bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
+    'poppins-medium': require('../../../assets/fonts/Poppins-Medium.ttf'),
+  })
+  if(!fontsLoaded){
+    return <AppLoading/>
+  }
   return (
     <View
       style={styles.main}
@@ -24,7 +33,7 @@ const VetCard = ({ vet }: IVetCardProps) => {
           className='w-[200px] h-[200px] rounded-[15px] '
           source={vet.image as ImageSourcePropType}
         />
-        <Text className='text-primary text-lg font-semibold ml-1'>
+        <Text style={{fontFamily:'poppins-medium'}} className='text-primary text-lg mt-1  ml-1'>
           {vet.name}
         </Text>
         <Text className='text-gray-400 text-sm font-semibold ml-1'>

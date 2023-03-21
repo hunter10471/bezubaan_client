@@ -9,11 +9,10 @@ export interface IUser {
   email: string;
   gender: Gender;
   avatar: string;
-  dateOfBirth:Date;
+  dateOfBirth?:Date;
+  password:string;
 }
 
-export interface IUserInitialState extends Partial<IUser> {
-
-}
+export interface IUserInitialState extends Partial<IUser> {}
 
 
