@@ -26,17 +26,17 @@ const VetCard = ({ vet }: IVetCardProps) => {
   return (
     <View
       style={styles.main}
-      className='p-2 pb-4 m-1 shadow-xl bg-white rounded-[25px] '
+      className='pb-4 m-1 shadow-xl bg-white rounded-md '
     >
       <TouchableOpacity activeOpacity={0.8}>
         <Image
-          className='w-[200px] h-[200px] rounded-[15px] '
+          className='w-[200px] h-[200px] rounded-t-md'
           source={vet.image as ImageSourcePropType}
         />
-        <Text style={{fontFamily:'poppins-medium'}} className='text-primary text-lg mt-1  ml-1'>
+        <Text style={{fontFamily:'poppins-medium'}} className='text-primary mt-1  ml-1 px-1 text-center'>
           {vet.name}
         </Text>
-        <Text className='text-gray-400 text-sm font-semibold ml-1'>
+        <Text className='text-gray-400 text-xs font-semibold ml-2 text-center'>
           {vet.location}
         </Text>
       </TouchableOpacity>

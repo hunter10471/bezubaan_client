@@ -36,7 +36,6 @@ const HomeScreen = () => {
   });
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const authState = useSelector((state:RootState) => state.user)
-  console.log(authState)
   const onProfileTap = () => {
     navigation.navigate('ProfileScreen', undefined)
   }
@@ -52,7 +51,7 @@ const HomeScreen = () => {
       <ScrollView>
 
       <View className='flex mx-6 my-4 '>
-        <View className='flex flex-row justify-between'>
+        <View className='flex flex-row justify-between items-center'>
           <NormalHeading text={authState.username ? `Hey there, ${authState.username}` : 'What are you looking for ?'} takesHalf />
           <TouchableOpacity onPress={onProfileTap} >
             <Image style={styles.avatar} source={images.default_avatar} />

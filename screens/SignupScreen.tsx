@@ -27,6 +27,7 @@ import AppLoading from 'expo-app-loading';
 import Alert from '../components/medium/Alert/Alert';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
+import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
 
 const SignupScreen = () => {
   const dimensions = useWindowDimensions();
@@ -90,67 +91,29 @@ const SignupScreen = () => {
       />
       <ScrollView>
 
-      <View className='m-4 mt-2'>
+      <View className='m-4 mt-0 items-center'>
         <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-primary'>
           Sign Up
         </Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
           Enter your details below to create your bezubaan account.
         </Text>
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons name='user-alt' size={15} color={'#666'} />
-          <TextInput
-            className='w-full'
-            placeholder='Username'
-            keyboardType='default'
-            onChangeText={(text) => setForm({ ...form, username: text })}
-          />
-        </View>
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons2 name='email' size={17} color={'#666'} />
-          <TextInput
-            placeholder='Email'
-            keyboardType='default'
-            onChangeText={(text) => setForm({ ...form, email: text })}
-            className='w-full'
-          />
-        </View>
-
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons name='lock' size={15} color={'#666'} />
-          <TextInput
-            className='w-full'
-            placeholder='Password'
-            secureTextEntry={true}
-            onChangeText={(text) => setForm({ ...form, password: text })}
-          />
-        </View>
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <MaterialIcons name='lock' size={15} color={'#666'} />
-          <TextInput
-            className='w-full'
-            placeholder='Confirm password'
-            secureTextEntry={true}
-            onChangeText={(text) => setConfirmPassword(text)}
-          />
-        </View>
+        <InputWithLabel onChangeText={(text) => setForm({ ...form, username: text })} icon={<MaterialIcons name='user-alt' size={17} color={'#40B37C'} />} label='Username'  />
+        <InputWithLabel onChangeText={(text) => setForm({ ...form, email: text })} icon={<MaterialIcons2 name='email' size={20} color={'#40B37C'} />} label='Email'  />
+        <InputWithLabel onChangeText={(text) => setForm({ ...form, password: text })} icon={<MaterialIcons name='lock' size={17} color={'#40B37C'} />} label='Password'  />
+        <InputWithLabel onChangeText={(text) => setConfirmPassword(text)} icon={<MaterialIcons name='lock' size={17} color={'#40B37C'} />} label='Confirm Password'  />
        {error && <Alert text='There was an error signing you up.' type='error' />}
-        <TouchableOpacity onPress={handleSubmitForm} style={styles.button}>
+        <TouchableOpacity onPress={handleSubmitForm} style={{...styles.button, width:dimensions.width - 80}}>
           <Text style={{fontFamily:'poppins-bold'}} className='text-center text-white'>
           {loading ? <ActivityIndicator color='#fff' /> : 'Create Account' }
           </Text>
         </TouchableOpacity>
-        <Text className='text-center text-gray-400 font-bold mb-5'>
-            OR
-          </Text>
-        <View className='flex flex-row justify-center mb-5'>
-          <SocialLoginButton color='#4267B2' type='facebook' />
-          <SocialLoginButton color='#d62d20' type='google' />
-          <SocialLoginButton color='#00acee' type='twitter' />
-        </View>
-      
+        <TouchableOpacity style={{...styles.buttonOutlined,  width:dimensions.width - 80 }} >
+          <Image source={images.google} />
+          <Text style={{fontFamily:'poppins-bold'}} className='ml-4 text-center text-primary'>{loading ? <ActivityIndicator color='#fff' /> : 'Sign Up With Google' }</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={onPressLoginNavigate}>
-          <Text className='text-center text-gray-400 font-bold'>
+          <Text className='text-center text-gray-400 font-bold mt-10'>
             Already have an account?
           </Text>
         </TouchableOpacity>
@@ -170,7 +133,7 @@ const styles = StyleSheet.create({
     backgroundColor: '#40B37C',
     textAlign: 'center',
     paddingVertical: 15,
-    marginVertical: 20,
+    marginTop: 10,
     borderRadius: 10,
   },
   back: {
@@ -218,5 +181,17 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: 'center',
+  },
+  buttonOutlined: {
+    borderColor: '#40B37C',
+    borderWidth:2,
+    textAlign: 'center',
+    paddingVertical: 15,
+    marginTop: 10,
+    borderRadius: 10,
+    display:'flex',
+    alignItems:'center',
+    flexDirection:'row',
+    justifyContent:'center'
   },
 });

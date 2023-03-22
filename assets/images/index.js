@@ -17,6 +17,7 @@ const images = {
   welcome: require('./welcome.png'),
   walking_dog: require('./walking_dog.png'),
   playful_cat: require('./playful_cat.png'),
+  google: require('./google.png'),
 };
 
 module.exports = images;

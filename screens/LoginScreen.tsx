@@ -8,7 +8,7 @@ import {
   useWindowDimensions,
   ActivityIndicator
 } from 'react-native';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
@@ -28,6 +28,7 @@ import {
   GoogleSigninButton,
   statusCodes,
   } from '@react-native-google-signin/google-signin';
+import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
 
 
 const LoginScreen = () => {
@@ -74,31 +75,21 @@ const LoginScreen = () => {
   //     await GoogleSignin.hasPlayServices();
   //     const {accessToken, idToken} = await GoogleSignin.signIn();
   //     setloggedIn(true);
-  //   } catch (error) {
-  //     console.log(error)
-  //     setError(true)
+  //   } catch (error:any) {
+  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+  //       // user cancelled the login flow
+  //       alert('Cancel');
+  //     } else if (error.code === statusCodes.IN_PROGRESS) {
+  //       alert('Signin in progress');
+  //       // operation (f.e. sign in) is in progress already
+  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+  //       alert('PLAY_SERVICES_NOT_AVAILABLE');
+  //       // play services not available or outdated
+  //     } else {
+  //       // some other error happened
+  //     }
   //   }
   // };
-
-  // const signOutWithGoogle = async () => {
-  //   try {
-  //     await GoogleSignin.revokeAccess();
-  //     await GoogleSignin.signOut();
-  //     setloggedIn(false);
-  //     setUserInfo([]);
-  //   } catch (error) {
-  //     console.error(error);
-  //   }
-  // };
-
-  // useEffect(() => {
-  //   GoogleSignin.configure({
-  //     scopes: ['email'],
-  //     webClientId:
-  //       '418977770929-g9ou7r9eva1u78a3anassxxxxxxx.apps.googleusercontent.com',
-  //     offlineAccess: true,
-  //   });
-  // }, []);
 
   if(!fontsLoaded){
     return <AppLoading/>
@@ -115,45 +106,23 @@ const LoginScreen = () => {
         ]}
         source={images.playful_cat}
       />
-      <View className='m-4 mt-4'>
-        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-primary'>Login</Text>
+      <View className='m-4 mt-0 items-center'>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 mb-1 text-primary'>Login</Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
           Enter your details below to login to your bezubaan account.
         </Text>
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <FontAwesome name='user-alt' size={15} color={'#666'} />
-          <TextInput
-            className='w-full'
-            placeholder='Username'
-            keyboardType='default'
-            onChangeText={(text) => setForm({...form, username:text}) }
-          />
-        </View>
-
-        <View className='flex flex-row items-center gap-4 my-2 bg-gray-100 mx-2 px-2 py-1 rounded-[10px]'>
-          <FontAwesome name='lock' size={15} color={'#666'} />
-          <TextInput
-            placeholder='Password'
-            secureTextEntry={true}
-            className='w-full'
-            onChangeText={(text) => setForm({...form, password:text}) }
-          />
-        </View>
-
-        <TouchableOpacity onPress={handleLogin} style={styles.button}>
+        <InputWithLabel icon={<FontAwesome name='user-alt' size={17} color={'#40B37C'} />} label='Username' onChangeText={(text) => setForm({...form, username:text})} />
+        <InputWithLabel icon={<FontAwesome name='lock' size={17} color={'#40B37C'} />} label='Password' onChangeText={(text) => setForm({...form, password:text})} />
+        {error && <Alert text='There was an error logging you in.' type='error' /> }
+        <TouchableOpacity onPress={handleLogin} style={{...styles.button, width:dimensions.width - 80}}>
           <Text style={{fontFamily:'poppins-bold'}} className='text-center text-white'>{loading ? <ActivityIndicator color='#fff' /> : 'Submit' }</Text>
         </TouchableOpacity>
-        {error && <Alert text='There was an error logging you in.' type='error' /> }
-        <Text className='text-center text-gray-400 font-bold mb-5'>
-            OR
-          </Text>
-        <View className='flex flex-row justify-center mb-5'>
-          <SocialLoginButton color='#4267B2' type='facebook' />
-          <SocialLoginButton color='#d62d20' type='google' />
-          <SocialLoginButton color='#00acee' type='twitter' />
-        </View>
+        <TouchableOpacity onPress={handleLogin} style={{...styles.buttonOutlined,  width:dimensions.width - 80 }} >
+          <Image source={images.google} />
+          <Text style={{fontFamily:'poppins-bold'}} className='ml-4 text-center text-primary'>{loading ? <ActivityIndicator color='#fff' /> : 'Sign In With Google' }</Text>
+        </TouchableOpacity>
         <TouchableOpacity onPress={onPressSignupNavigate}>
-          <Text className='text-center text-gray-400 font-bold'>
+          <Text className='text-center text-gray-400 font-bold mt-10'>
             Don't have an account?
           </Text>
         </TouchableOpacity>
@@ -161,28 +130,6 @@ const LoginScreen = () => {
       <TouchableOpacity onPress={() => navigation.goBack()} style={styles.back}>
         <MaterialIcons size={25} name='arrow-back' />
       </TouchableOpacity>
-      {/* <Modal
-        animationType='slide'
-        transparent={true}
-        visible={success}
-        onRequestClose={() => {
-          setSuccess(success);
-        }}
-      >
-        <View style={styles.centeredView}>
-          <View style={styles.modalView}>
-            <Text style={styles.modalText}>
-              Your account has been created successfully. You will be redirected
-              to home.
-            </Text>
-            <Pressable onPress={() => setSuccess(!success)}>
-              <Text className='bg-primary px-4 py-2 text-white rounded-[10px]'>
-                Close
-              </Text>
-            </Pressable>
-          </View>
-        </View>
-      </Modal> */}
     </SafeAreaView>
   );
 };
@@ -194,8 +141,20 @@ const styles = StyleSheet.create({
     backgroundColor: '#40B37C',
     textAlign: 'center',
     paddingVertical: 15,
-    marginVertical: 20,
+    marginTop: 10,
     borderRadius: 10,
+  },
+  buttonOutlined: {
+    borderColor: '#40B37C',
+    borderWidth:2,
+    textAlign: 'center',
+    paddingVertical: 15,
+    marginTop: 10,
+    borderRadius: 10,
+    display:'flex',
+    alignItems:'center',
+    flexDirection:'row',
+    justifyContent:'center'
   },
   back: {
     position: 'absolute',
