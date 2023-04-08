@@ -2,13 +2,12 @@ import {
   Image,
   StyleSheet,
   Text,
-  TextInput,
   TouchableOpacity,
   View,
   useWindowDimensions,
   ActivityIndicator
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import FontAwesome from 'react-native-vector-icons/FontAwesome5';
@@ -17,18 +16,14 @@ import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { loginUser } from '../api/user.api';
-import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
 import Alert from '../components/medium/Alert/Alert';
-import {
-  GoogleSignin,
-  GoogleSigninButton,
-  statusCodes,
-  } from '@react-native-google-signin/google-signin';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
+
+
 
 
 const LoginScreen = () => {
@@ -70,26 +65,7 @@ const LoginScreen = () => {
     navigation.navigate('SignupScreen', undefined);
   };
 
-  // const signInWithGoogle = async () => {
-  //   try {
-  //     await GoogleSignin.hasPlayServices();
-  //     const {accessToken, idToken} = await GoogleSignin.signIn();
-  //     setloggedIn(true);
-  //   } catch (error:any) {
-  //     if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-  //       // user cancelled the login flow
-  //       alert('Cancel');
-  //     } else if (error.code === statusCodes.IN_PROGRESS) {
-  //       alert('Signin in progress');
-  //       // operation (f.e. sign in) is in progress already
-  //     } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-  //       alert('PLAY_SERVICES_NOT_AVAILABLE');
-  //       // play services not available or outdated
-  //     } else {
-  //       // some other error happened
-  //     }
-  //   }
-  // };
+
 
   if(!fontsLoaded){
     return <AppLoading/>
@@ -107,7 +83,7 @@ const LoginScreen = () => {
         source={images.playful_cat}
       />
       <View className='m-4 mt-0 items-center'>
-        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 mb-1 text-primary'>Login</Text>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 mb-1 text-heading'>Login</Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>
           Enter your details below to login to your bezubaan account.
         </Text>
@@ -117,7 +93,7 @@ const LoginScreen = () => {
         <TouchableOpacity onPress={handleLogin} style={{...styles.button, width:dimensions.width - 80}}>
           <Text style={{fontFamily:'poppins-bold'}} className='text-center text-white'>{loading ? <ActivityIndicator color='#fff' /> : 'Submit' }</Text>
         </TouchableOpacity>
-        <TouchableOpacity onPress={handleLogin} style={{...styles.buttonOutlined,  width:dimensions.width - 80 }} >
+        <TouchableOpacity style={{...styles.buttonOutlined,  width:dimensions.width - 80 }} >
           <Image source={images.google} />
           <Text style={{fontFamily:'poppins-bold'}} className='ml-4 text-center text-primary'>{loading ? <ActivityIndicator color='#fff' /> : 'Sign In With Google' }</Text>
         </TouchableOpacity>

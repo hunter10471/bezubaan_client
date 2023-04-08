@@ -21,7 +21,6 @@ import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { Gender, IUser, RegisterUser } from '../interfaces/User.interface';
 import { createUser } from '../api/user.api';
-import SocialLoginButton from '../components/small/SocialLoginButton/SocialLoginButton';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Alert from '../components/medium/Alert/Alert';
@@ -92,7 +91,7 @@ const SignupScreen = () => {
       <ScrollView>
 
       <View className='m-4 mt-0 items-center'>
-        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-primary'>
+        <Text style={{fontFamily:'poppins-bold'}} className='text-3xl mx-2 my-1 text-heading'>
           Sign Up
         </Text>
         <Text className='text-xs mx-2 mb-2 text-gray-500'>

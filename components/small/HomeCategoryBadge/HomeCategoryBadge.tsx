@@ -8,7 +8,7 @@ interface IHomeCategoryBadgeProps {
 const HomeCategoryBadge = ({ tag }: IHomeCategoryBadgeProps) => {
   return (
     <TouchableOpacity>
-      <Text className='mx-4 px-4 py-2 rounded-[25px] bg-gray-200 text-gray-500'>
+      <Text className='mx-2 px-4 py-2 rounded-[25px] border-2 border-secondary text-center text-secondary'>
         {tag}
       </Text>
     </TouchableOpacity>

@@ -1,29 +1,43 @@
-import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
-import React from 'react';
+import { Image, SafeAreaView, StyleSheet, Text, TouchableOpacity, View, Platform } from 'react-native';
+import React, { useState } from 'react';
 import images from '../assets/images';
 import FeatherIcons from 'react-native-vector-icons/Feather';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
+import FontAwesome5Icon from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons2 from 'react-native-vector-icons/MaterialIcons';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
 import { useNavigation } from '@react-navigation/native';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import DateTimePicker, { DateTimePickerEvent } from '@react-native-community/datetimepicker';
 
 const ProfileScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const authState = useSelector(( state:RootState ) => state.user );
+    const [date, setDate] = useState<Date>(new Date());
+    const [show, setShow] = useState<boolean>(false);
+
+    const onChange = (event:DateTimePickerEvent, selectedDate?:Date) => {
+        const currentDate = selectedDate || date;
+        setShow(Platform.OS !== 'ios');
+        setDate(currentDate);
+        let tempDate = new Date(currentDate);
+        let fDate = tempDate.getDate() + '/' + (tempDate.getMonth() + 1) + '/' + tempDate.getFullYear();
+        console.log(fDate)
+    }
+
+    const [gender, setGender] = useState(authState.gender);
     const onBackPress = () => {
         navigation.navigate('HomeScreen',undefined)
     }
-    console.log(authState)
   return (
     <SafeAreaView style={{flex:1}} className='bg-white h-full'>
         <View className='flex items-center justify-center  bg-primary py-12'>
             <View className='my-6 flex-1 relative w-full'>
                 <TouchableOpacity onPress={onBackPress} style={styles.backArrow} >
-                    <MaterialIcons onPress={onBackPress} name='arrow-back' size={30} color='#fff' />
-                    
+                    <MaterialIcons onPress={onBackPress} name='arrow-back' size={30} color='#fff' />                
                 </TouchableOpacity>
             <Text className=' text-white font-medium  text-xl text-center'>
                 Edit Profile
@@ -42,11 +56,21 @@ const ProfileScreen = () => {
           </TouchableOpacity>
         </View>
         <View className='flex-1 items-center pt-10'>
-            <InputWithLabel defaultValue={authState.username} label='Username' />
-            <InputWithLabel defaultValue={authState.email} label='Email' />
-            <InputWithLabel defaultValue={authState.phone} label='Phone' />
-            <InputWithLabel defaultValue={authState.gender} label='Gender' />
-            <InputWithLabel defaultValue={authState.dateOfBirth && authState.dateOfBirth.toDateString()} label='Date Of Birth' />
+            <InputWithLabel defaultValue={authState.username} icon={<FontAwesome5Icon name='user-alt' size={17} color={'#40B37C'} />} label='Username' />
+            <InputWithLabel defaultValue={authState.email} icon={<MaterialIcons2 name='email' size={20} color={'#40B37C'} />} label='Email' />
+            <InputWithLabel defaultValue={authState.phone}  icon={<FontAwesome5Icon name='phone' size={17} color={'#40B37C'} />} label='Phone' />
+            <InputWithLabel defaultValue={gender}  icon={<FontAwesome5Icon name='restroom' size={17} color={'#40B37C'} />} label='Gender' />
+            <InputWithLabel onFocus={()=>setShow(true)} defaultValue={authState.dateOfBirth && authState.dateOfBirth.toDateString()} icon={<FontAwesome5Icon name='calendar-alt' size={17} color={'#40B37C'} />} label='Date Of Birth' />
+            {
+                show && <DateTimePicker 
+                    testID='dateTimePicker'
+                    value={date}
+                    mode='date'
+                    is24Hour={false}
+                    display={'default'}
+                    onChange={onChange}
+                 />
+            }
         </View>
     </SafeAreaView>
   )

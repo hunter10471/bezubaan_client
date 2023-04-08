@@ -1,6 +1,6 @@
 import axios from 'axios';
+import { baseUrl } from '../constants';
 import { IUser, RegisterUser } from './../interfaces/User.interface';
-const baseUrl = 'http://192.168.100.68:5000';
 
 export const createUser = async (data: RegisterUser) => {
   const url = `${baseUrl}/auth/signup`;
@@ -21,7 +21,6 @@ export const loginUser = async (data: {
   password: string;
 }) => {
   const url = `${baseUrl}/auth/login`;
-  console.log(data)
   try {
     const res = await axios.post<IUser>(url, data);
     return res.data;

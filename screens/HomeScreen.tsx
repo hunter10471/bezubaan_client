@@ -67,7 +67,7 @@ const HomeScreen = () => {
           renderItem={({ item }) => <HomeCategoryBadge tag={item} />}
           contentContainerStyle={{
             flex: 1,
-            justifyContent: 'space-around',
+            justifyContent: 'center',
             marginBottom: 20,
           }}
           />

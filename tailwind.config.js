@@ -8,9 +8,11 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        primary: ' #127357',
-        secondary:'#40B37C',
+        heading: '#127357',
+        primary:'#40B37C',
+        secondary:'#1ED96F',
         text: '#40B37C',
+        subheading:'#010B40'
       },
       fontFamily: {
         heading_regular: ['Poppins-Regular', 'sans-serif'],

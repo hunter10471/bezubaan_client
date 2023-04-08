@@ -5,7 +5,7 @@
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
-    "scheme":"com.bezubaan.authsessiongoogle",
+    "scheme": "com.bezubaan.authsessiongoogle",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -20,10 +20,12 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier":"com.bezubaan.authsessiongoogle"
+      "bundleIdentifier": "com.bezubaan.authsessiongoogle",
+      "googleServicesFile": "./GoogleService-Info.plist"
     },
     "android": {
-      "package":"com.bezubaan.authsessiongoogle",
+      "package": "com.bezubaan.authsessiongoogle",
+      "googleServicesFile": "./google-services.json",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
@@ -31,6 +33,11 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "ead358af-c099-4fa4-bb86-d4648e7a8ae3"
+      }
     }
   }
 }

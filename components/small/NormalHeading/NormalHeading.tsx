@@ -18,7 +18,7 @@ const NormalHeading = ({text, takesHalf}:INormalHeadingProps) => {
         return <AppLoading/>
       }
   return (
-      <Text style={{fontFamily:'poppins-medium'}} className={` text-primary text-xl ${takesHalf && ' w-[50%]' }`}>{text}</Text>
+      <Text style={{fontFamily:'poppins-medium'}} className={` text-heading text-xl ${takesHalf && ' w-[50%]' }`}>{text}</Text>
   )
 }
 

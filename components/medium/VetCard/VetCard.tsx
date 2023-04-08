@@ -33,7 +33,7 @@ const VetCard = ({ vet }: IVetCardProps) => {
           className='w-[200px] h-[200px] rounded-t-md'
           source={vet.image as ImageSourcePropType}
         />
-        <Text style={{fontFamily:'poppins-medium'}} className='text-primary mt-1  ml-1 px-1 text-center'>
+        <Text style={{fontFamily:'poppins-medium'}} className='text-heading mt-1  ml-1 px-1 text-center'>
           {vet.name}
         </Text>
         <Text className='text-gray-400 text-xs font-semibold ml-2 text-center'>

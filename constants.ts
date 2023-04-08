@@ -1,0 +1,1 @@
+export const baseUrl = 'http://bezubaan-env.eba-svbxpdzc.ap-south-1.elasticbeanstalk.com'

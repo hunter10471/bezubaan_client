@@ -83,7 +83,7 @@ const OnboardingScreen = () => {
             onPress={onPress}
             className={`bg-primary w-[80%] py-4 text-center rounded-[10px] absolute bottom-16 left-[10%] `}
           >
-            <Text style={styles.button} className='text-white  text-center '>
+            <Text style={styles.button} className='text-white text-center '>
               {' '}
               Get Started
             </Text>

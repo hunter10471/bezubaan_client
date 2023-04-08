@@ -7,14 +7,22 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:304185323891:android:0c895e1465540936651506",
+        "mobilesdk_app_id": "1:304185323891:android:a88717a8eca7a714651506",
         "android_client_info": {
-          "package_name": "com.rngooglelogin"
+          "package_name": "com.bezubaan.authsessiongoogle"
         }
       },
       "oauth_client": [
         {
-          "client_id": "304185323891-t5lgbj4unpljo7c45s7gaagb1950660d.apps.googleusercontent.com",
+          "client_id": "304185323891-f9eopsqp221vma8781g31kh9to8mlgjg.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.bezubaan.authsessiongoogle",
+            "certificate_hash": "84e775360a362dc149a62248427b54e18906f492"
+          }
+        },
+        {
+          "client_id": "304185323891-7dra6n4849bgumjck7j873g2nkjb9sjq.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +35,51 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "304185323891-t5lgbj4unpljo7c45s7gaagb1950660d.apps.googleusercontent.com",
+              "client_id": "304185323891-1ulh045213a1990d2bvvk49qkkih2pt5.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "304185323891-4fs9damg41r65lsnukg9o3g0idsim4c5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bezubaan.authsessiongoogle"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:304185323891:android:0c895e1465540936651506",
+        "android_client_info": {
+          "package_name": "com.rngooglelogin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "304185323891-7dra6n4849bgumjck7j873g2nkjb9sjq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB6QFkG-GEFRRvk10h2kQyL6Ic5NcthUIc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "304185323891-1ulh045213a1990d2bvvk49qkkih2pt5.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "304185323891-4fs9damg41r65lsnukg9o3g0idsim4c5.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.bezubaan.authsessiongoogle"
+              }
             }
           ]
         }
