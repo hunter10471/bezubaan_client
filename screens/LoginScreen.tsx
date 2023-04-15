@@ -22,6 +22,7 @@ import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
 import Alert from '../components/medium/Alert/Alert';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 
 
@@ -51,6 +52,7 @@ const LoginScreen = () => {
         dispatch(login(user))
         setError(false);
         setSuccess(true);
+        await AsyncStorage.setItem('loggedIn','true');
         navigation.navigate('HomeScreen', undefined);
       }else throw new Error('There was an error logging in the user.')
     } catch (error) {

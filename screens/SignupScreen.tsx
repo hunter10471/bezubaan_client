@@ -27,6 +27,7 @@ import Alert from '../components/medium/Alert/Alert';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const SignupScreen = () => {
   const dimensions = useWindowDimensions();
@@ -56,6 +57,7 @@ const SignupScreen = () => {
           dispatch(login(user))
           setError(false);
           setSuccess(true);
+          await AsyncStorage.setItem('loggedIn','true');
           navigation.navigate('HomeScreen', undefined);
         }else throw new Error('There was an error signing up the user.')
       } catch (error) {

@@ -9,6 +9,7 @@ import HomeScreen from './screens/HomeScreen';
 import ProfileScreen from './screens/ProfileScreen';
 import { Provider } from 'react-redux';
 import { store } from './redux/store';
+import ClinicScreen from './screens/ClinicScreen';
 
 
 export default function App() {
@@ -30,6 +31,7 @@ export default function App() {
           <Stack.Screen name='LoginScreen' component={LoginScreen} />
           <Stack.Screen name='HomeScreen' component={HomeScreen} />
           <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
+          <Stack.Screen name='ClinicScreen' component={ClinicScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

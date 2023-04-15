@@ -14,7 +14,7 @@ const InputWithLabel = ({ label, defaultValue, icon, onChangeText, onFocus  }:II
   return (
     <View style={{width: dimensions.width - 80}} className='m-3 relative'>
       <View className='absolute bottom-[35%] left-1'>{icon}</View>
-      <TextInput style={{paddingLeft: icon && 40}} onChangeText={onChangeText} onFocus={onFocus} className=' pt-2 pb-3 border-b-2 border-gray-300 w-full focus:border-primary transition-all ' placeholder={label} secureTextEntry={label === 'Password'}  defaultValue={defaultValue} keyboardType={'default'} />
+      <TextInput style={{paddingLeft: icon && 40}} onChangeText={onChangeText} onFocus={onFocus} className=' pt-2 pb-3 border-b-2 border-gray-300 w-full focus:border-primary transition-all ' placeholder={label} secureTextEntry={label === ('Password' || 'Confirm Password')}  defaultValue={defaultValue} keyboardType={'default'} />
     </View>
   )
 }

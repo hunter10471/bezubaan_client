@@ -61,7 +61,7 @@ const ProfileScreen = () => {
             <InputWithLabel defaultValue={authState.phone}  icon={<FontAwesome5Icon name='phone' size={17} color={'#40B37C'} />} label='Phone' />
             <InputWithLabel defaultValue={gender}  icon={<FontAwesome5Icon name='restroom' size={17} color={'#40B37C'} />} label='Gender' />
             <InputWithLabel onFocus={()=>setShow(true)} defaultValue={authState.dateOfBirth && authState.dateOfBirth.toDateString()} icon={<FontAwesome5Icon name='calendar-alt' size={17} color={'#40B37C'} />} label='Date Of Birth' />
-            {
+            {/* {
                 show && <DateTimePicker 
                     testID='dateTimePicker'
                     value={date}
@@ -70,7 +70,7 @@ const ProfileScreen = () => {
                     display={'default'}
                     onChange={onChange}
                  />
-            }
+            } */}
         </View>
     </SafeAreaView>
   )

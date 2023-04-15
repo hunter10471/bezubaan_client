@@ -10,6 +10,9 @@ import React from 'react';
 import { IVet } from '../../../interfaces/Vet.interface';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../interfaces/navigation.interface';
+import { useNavigation } from '@react-navigation/native';
 
 interface IVetCardProps {
   vet: IVet;
@@ -23,20 +26,24 @@ const VetCard = ({ vet }: IVetCardProps) => {
   if(!fontsLoaded){
     return <AppLoading/>
   }
+  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const onClinicTap = () => {
+    navigation.navigate('ClinicScreen', undefined)
+  }
   return (
     <View
       style={styles.main}
       className='pb-4 m-1 shadow-xl bg-white rounded-md '
     >
-      <TouchableOpacity activeOpacity={0.8}>
+      <TouchableOpacity onPress={onClinicTap} activeOpacity={0.8}>
         <Image
           className='w-[200px] h-[200px] rounded-t-md'
           source={vet.image as ImageSourcePropType}
         />
-        <Text style={{fontFamily:'poppins-medium'}} className='text-heading mt-1  ml-1 px-1 text-center'>
+        <Text style={{fontFamily:'poppins-medium'}} className='text-heading mt-2  ml-1 px-2 '>
           {vet.name}
         </Text>
-        <Text className='text-gray-400 text-xs font-semibold ml-2 text-center'>
+        <Text className='text-gray-400 text-xs font-semibold ml-2 px-2 '>
           {vet.location}
         </Text>
       </TouchableOpacity>

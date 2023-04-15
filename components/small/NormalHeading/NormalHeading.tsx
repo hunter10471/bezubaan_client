@@ -24,4 +24,3 @@ const NormalHeading = ({text, takesHalf}:INormalHeadingProps) => {
 
 export default NormalHeading
 
-const styles = StyleSheet.create({})
