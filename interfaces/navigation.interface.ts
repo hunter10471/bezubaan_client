@@ -6,4 +6,5 @@ export type RootStackParamList = {
   LoginScreen: { id: number } | undefined;
   ProfileScreen: { id: number } | undefined;
   ClinicScreen: {id: number} | undefined;
+  VetScreen: {id: number} | undefined;
 };

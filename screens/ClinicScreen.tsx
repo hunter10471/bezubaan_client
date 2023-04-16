@@ -32,7 +32,7 @@ const ClinicScreen = () => {
     return <AppLoading/>
   }
   return (
-    <SafeAreaView className='relative bg-white'>
+    <SafeAreaView className='h-full relative bg-white'>
          <TouchableOpacity  onPress={() => navigation.goBack()} style={styles.back}><Text> <MaterialIcons color={'#fff'} size={30} name='arrow-back' /> </Text></TouchableOpacity>
         <Image style={{width:dimensions.width,height:dimensions.height/2, position:'absolute'}} source={images.vet1} />
         <ScrollView>
@@ -42,7 +42,7 @@ const ClinicScreen = () => {
             <AirbnbRating size={20} defaultRating={0} isDisabled showRating={false} />
             <Text className='text-yellow-500 font-medium'>0 Ratings</Text>
             </TouchableOpacity>
-        <View className='w-full flex-row items-center font-normal mt-1'>
+        <View className='w-full flex-row items-center font-normal'>
             <MaterialIcons name='location-on' color='#c6c6c6' size={25} />
             <Text className=' text-gray-500 font-semibold'>Karachi</Text>
         </View>
@@ -54,8 +54,8 @@ const ClinicScreen = () => {
             </View>
         <View className='w-full items-center'>
             <Text className='text-lg font-bold text-gray-700 mt-8 mb-6 text-left w-full'>Available Doctors</Text>
-            <ClinicCard physical chat name='Rafay' fees='200' image={images.doctor_image} major='Small Animal Medicine' time='9:00 AM - 5:00 PM' certifications={['Trained Physician']} />
-            <ClinicCard physical name='Rafay' fees='200' image={images.doctor_image} major='Small Animal Medicine' time='9:00 AM - 5:00 PM' certifications={['Trained Physician']} />
+            <ClinicCard physical chat name='Rafay' fees='200' image={images.doctor_image} major='Small Animal Medicine' time='9:00 AM - 5:00 PM'  />
+            <ClinicCard physical name='Rafay' fees='200' image={images.doctor_image} major='Small Animal Medicine' time='9:00 AM - 5:00 PM' />
         </View>
         <Text className='text-lg font-bold text-gray-700 mt-8 mb-4'>Description</Text>
         <Text className='text-gray-500 text-base'>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Sed fugit dolor tempore! At architecto, reiciendis, nemo temporibus delectus magnam in officia voluptas numquam illo enim asperiores quas excepturi vero dicta alias quo maxime harum tenetur blanditiis eaque. Maiores numquam dolores excepturi quasi consectetur dicta soluta aut quae, eos architecto cum.</Text>

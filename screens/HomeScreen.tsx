@@ -80,7 +80,7 @@ const HomeScreen = () => {
           data={vets}
           renderItem={({ item }) => <VetCard vet={item} />}
         />
-          <NormalHeading text='Find nearby vets' />
+          {/* <NormalHeading text='Find nearby vets' />
         <View style={{marginTop:10}}>
           <MapView
             style={styles.map}
@@ -92,7 +92,7 @@ const HomeScreen = () => {
               longitudeDelta: 0.0421,
             }}
             />
-        </View>
+        </View> */}
       </View>
       {/* <View
         className='w-[80%] left-[10%] px-8 py-4 rounded-[25px] flex flex-row justify-between'

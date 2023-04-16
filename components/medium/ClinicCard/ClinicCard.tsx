@@ -1,22 +1,25 @@
 import { Image, ImageSourcePropType, Pressable, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
 import React from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
+import { StackNavigationProp } from '@react-navigation/stack';
+import { RootStackParamList } from '../../../interfaces/navigation.interface';
+import { useNavigation } from '@react-navigation/native';
 
 interface IClinicCardProps {
     name:string;
     major:string;
     fees:string;
     time:string;
-    certifications?:string[];
     image:string;
     physical?:boolean;
     chat?:boolean;
 }
 
-const ClinicCard = ({name,major,fees,time,certifications,image,chat,physical}:IClinicCardProps) => {
+const ClinicCard = ({name,major,fees,time,image,chat,physical}:IClinicCardProps) => {
     const {width} = useWindowDimensions();
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   return (
-    <TouchableOpacity  style={{...styles.ClinicCard, width:width - 50}}>
+    <View  style={{...styles.ClinicCard, width:width - 50}}>
         <View className='flex-row'>
         <Image className='w-[92px] h-[92px]  rounded-md' source={image as ImageSourcePropType} />
         <View className='ml-4'>
@@ -34,8 +37,8 @@ const ClinicCard = ({name,major,fees,time,certifications,image,chat,physical}:IC
             <Text className='text-lg font-medium'> ${fees}</Text>
         </View>
       </View>
-      <Pressable className='bg-primary py-2 px-4 rounded-xl mt-2'><Text className='text-center text-white font-bold'>Make An Appointment</Text></Pressable>
-    </TouchableOpacity>
+        <Pressable onPress={()=>navigation.navigate('VetScreen')} className='bg-primary py-2 px-4 rounded-xl mt-2'><Text className='text-center text-white font-bold'>Make An Appointment</Text></Pressable>
+    </View>
   )
 }
 

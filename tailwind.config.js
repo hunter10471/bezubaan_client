@@ -11,7 +11,7 @@ module.exports = {
         heading: '#127357',
         primary:'#40B37C',
         secondary:'#1ED96F',
-        text: '#40B37C',
+        text: '#1b1b1b',
         subheading:'#010B40'
       },
       fontFamily: {
