@@ -8,7 +8,7 @@ import NormalHeading from '../components/small/NormalHeading/NormalHeading'
 import { AirbnbRating } from 'react-native-ratings';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import ClinicCard from '../components/medium/ClinicCard/ClinicCard'
-import FacilityBox from '../components/medium/FacilityBox/FacilityBox'
+import FacilityBox from '../components/small/FacilityBox/FacilityBox'
 import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../interfaces/navigation.interface'

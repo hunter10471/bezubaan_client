@@ -60,21 +60,20 @@ const HomeScreen = () => {
         </View>
         <View className='flex flex-row items-center gap-4 my-6 bg-gray-100  px-4 py-2 rounded-[10px]'>
           <MaterialIcons name='search' size={15} color={'#666'} />
-          <TextInput placeholder='Search for vets' keyboardType='default' />
+          <TextInput placeholder='Search' keyboardType='default' />
         </View>
-        <FlatList
-          data={badges}
-          horizontal
-          renderItem={({ item }) => <HomeCategoryBadge tag={item} />}
-          contentContainerStyle={{
-            flex: 1,
-            justifyContent: 'center',
-            marginBottom: 20,
-          }}
-          />
         
+        <NormalHeading text='Popular Vet Clinics' />
         <FlatList
-          style={{marginBottom:20}}
+          style={{marginVertical:20}}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={vets}
+          renderItem={({ item }) => <VetCard vet={item} />}
+        />
+        <NormalHeading text='Popular Vets' />
+                <FlatList
+          style={{marginVertical:20}}
           horizontal
           showsHorizontalScrollIndicator={false}
           data={vets}
