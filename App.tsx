@@ -11,6 +11,8 @@ import { Provider } from 'react-redux';
 import { store } from './redux/store';
 import ClinicScreen from './screens/ClinicScreen';
 import VetScreen from './screens/VetScreen';
+import BookingScreen from './screens/BookingScreen';
+import SuccessfulScreen from './screens/SuccessfulScreen';
 
 
 export default function App() {
@@ -34,6 +36,8 @@ export default function App() {
           <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
           <Stack.Screen name='ClinicScreen' component={ClinicScreen} />
           <Stack.Screen name='VetScreen' component={VetScreen} />
+          <Stack.Screen name='BookingScreen' component={BookingScreen} />
+          <Stack.Screen name='SuccessfulScreen' component={SuccessfulScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

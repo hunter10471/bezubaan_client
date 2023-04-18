@@ -1,5 +1,5 @@
-import { Dimensions, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
-import React, { useEffect, useState } from 'react'
+import { Animated, Dimensions, Easing, Image, Pressable, ScrollView, StyleSheet, Text, TouchableOpacity, View, useWindowDimensions } from 'react-native'
+import React, { useState } from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import images from '../assets/images'
 import NormalHeading from '../components/small/NormalHeading/NormalHeading'
@@ -10,8 +10,7 @@ import { RootStackParamList } from '../interfaces/navigation.interface'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 import QualificationLine from '../components/small/QualificationLine/QualificationLine'
 import { Calendar, DateData } from 'react-native-calendars'
-import moment from 'moment'
-import TimePill from '../components/small/TimePill/TimePill'
+import TimePills from '../components/medium/TimePills/TimePills'
 
 
 
@@ -19,35 +18,30 @@ const VetScreen = () => {
     const dimensions = useWindowDimensions();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const [date, setDate] = useState<string>('');
-    const [swiped, setSwiped] = useState<boolean>(false);
-    const [timeSlots, setTimeSlots] = useState<string[]>([]);
+    const [animation, setAnimation] = useState(new Animated.Value(0));
 
-    const createTimeSlots = (fromTime:string,toTime:string) => {
-        const startTime = moment(fromTime,'HH:mm')
-        const endTime = moment(toTime,'HH:mm')
-        if(endTime.isBefore(startTime)){
-            endTime.add(1,'day')
-        }
-        const array = [];
-        while(startTime <= endTime){
-            array.push(moment(startTime).format('HH:mm'))
-            startTime.add('30','minutes')
+    const startAnimation = () => {
+        Animated.timing(animation, {
+            toValue: -dimensions.width + 30,
+            duration:300,
+            easing:Easing.exp,
+            useNativeDriver:true
+        }).start()
+    }
 
-        }
-        return array;
+    const backAnimation = () => {
+        Animated.timing(animation, {
+            toValue: 0,
+            easing:Easing.exp,
+            duration:300,
+            useNativeDriver:true
+        }).start()
     }
 
     const onDayPress = (day:DateData) => {
+        startAnimation()
         setDate(day.dateString)
-        setSwiped(true)
     }
-
-    useEffect(()=>{
-       setTimeSlots(createTimeSlots('09:00','16:30'))
-    },[])
-
-
-
 
 
   return (
@@ -72,21 +66,14 @@ const VetScreen = () => {
                  <Text className='text-lg font-bold text-gray-700 my-2'>About</Text>
                  <Text className='text-base text-gray-600'>Meet Dr.Rafay, an experienced vet with a passion for equine medicine. With over 5 years of experience, Dr.Rafay specializes in treating animals of all sizes. He is known for his gentle approach and is excited to meet you and your furry friends!</Text>
                  <Text className='text-lg font-bold text-gray-700 mt-8 mb-6'>Choose an appointment slot</Text>
-                <View style={{transform:[{translateX: swiped ? -Dimensions.get('screen').width + 30 : 0}]}} className='flex-row w-full'>
+                <Animated.View style={{transform:[{translateX: animation}]}} className='flex-row w-full'>
                 <Calendar
                     markedDates={{
                     [date]: {selected: true, disableTouchEvent: true,selectedColor:'#40B37C'}}}                 
-                    onDayPress={onDayPress} style={{width:dimensions.width-50, flexShrink:0, marginHorizontal:10}} />
-                <View style={{width:Dimensions.get('screen').width - 30}} className='flex-row flex-wrap justify-center relative mt-10'>
-                    <TouchableOpacity style={styles.back}  onPress={() => setSwiped(false)}><Text> <MaterialIcons color={'#000'} size={30} name='arrow-back' /> </Text></TouchableOpacity>
-                    {
-                        timeSlots.map((item,index)=>{
-                            return <TimePill key={index} time={item} />
-                        })
-                    }
-                </View>
-                </View>
-                <Pressable className='bg-gray-400 py-4 w-full px-4 rounded-xl mt-10 mb-2'><Text className='text-center text-white font-bold'>Book Your Appointment</Text></Pressable>
+                    onDayPress={onDayPress} style={{width:dimensions.width-50, flexShrink:0, marginRight:15, marginLeft:10}} />
+                <TimePills backAnimation={backAnimation} fromTime='09:00' toTime='16:30' />
+                </Animated.View>
+                <Pressable onPress={()=>navigation.navigate('BookingScreen')} className='bg-primary py-4 w-full px-4 rounded-xl mt-10 mb-2'><Text className='text-center text-white font-bold'>Book Your Appointment</Text></Pressable>
             </View>
         </ScrollView>
     </SafeAreaView>
