@@ -9,4 +9,5 @@ export type RootStackParamList = {
   VetScreen: {id: number} | undefined;
   BookingScreen: {id: number} | undefined;
   SuccessfulScreen: {id: number} | undefined;
+  AppointmentsScreen: {id: number} | undefined;
 };

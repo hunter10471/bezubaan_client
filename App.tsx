@@ -13,6 +13,7 @@ import ClinicScreen from './screens/ClinicScreen';
 import VetScreen from './screens/VetScreen';
 import BookingScreen from './screens/BookingScreen';
 import SuccessfulScreen from './screens/SuccessfulScreen';
+import AppointmentsScreen from './screens/AppointmentsScreen';
 
 
 export default function App() {
@@ -38,6 +39,7 @@ export default function App() {
           <Stack.Screen name='VetScreen' component={VetScreen} />
           <Stack.Screen name='BookingScreen' component={BookingScreen} />
           <Stack.Screen name='SuccessfulScreen' component={SuccessfulScreen} />
+          <Stack.Screen name='AppointmentsScreen' component={AppointmentsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

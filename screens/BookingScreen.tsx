@@ -5,7 +5,6 @@ import { useNavigation } from '@react-navigation/native'
 import { StackNavigationProp } from '@react-navigation/stack'
 import { RootStackParamList } from '../interfaces/navigation.interface'
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
-import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel'
 import { SafeAreaView } from 'react-native-safe-area-context'
 
 
