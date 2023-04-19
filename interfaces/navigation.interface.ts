@@ -10,4 +10,5 @@ export type RootStackParamList = {
   BookingScreen: {id: number} | undefined;
   SuccessfulScreen: {id: number} | undefined;
   AppointmentsScreen: {id: number} | undefined;
+  DetailsScreen: {id: number} | undefined;
 };

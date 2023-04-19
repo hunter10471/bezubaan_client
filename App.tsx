@@ -14,6 +14,7 @@ import VetScreen from './screens/VetScreen';
 import BookingScreen from './screens/BookingScreen';
 import SuccessfulScreen from './screens/SuccessfulScreen';
 import AppointmentsScreen from './screens/AppointmentsScreen';
+import DetailsScreen from './screens/DetailsScreen';
 
 
 export default function App() {
@@ -40,6 +41,7 @@ export default function App() {
           <Stack.Screen name='BookingScreen' component={BookingScreen} />
           <Stack.Screen name='SuccessfulScreen' component={SuccessfulScreen} />
           <Stack.Screen name='AppointmentsScreen' component={AppointmentsScreen} />
+          <Stack.Screen name='DetailsScreen' component={DetailsScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

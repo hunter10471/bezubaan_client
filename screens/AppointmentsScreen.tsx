@@ -3,6 +3,7 @@ import React from 'react'
 import { SafeAreaView } from 'react-native-safe-area-context'
 import NormalHeading from '../components/small/NormalHeading/NormalHeading'
 import AppointmentTabs from '../components/small/AppointmentTabs/AppointmentTabs'
+import AppointmentCard from '../components/medium/AppointmentCard/AppointmentCard'
 
 type Props = {}
 
@@ -12,6 +13,9 @@ const AppointmentsScreen = (props: Props) => {
         <View className='p-6'>
           <NormalHeading text='My appointments' />
           <AppointmentTabs/>
+          <View>
+            <AppointmentCard/>
+          </View>
         </View>
     </SafeAreaView>
   )
