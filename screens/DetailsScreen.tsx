@@ -20,6 +20,12 @@ const DetailsScreen = () => {
    if(!fontsLoaded){
     return <AppLoading/>
   }
+
+  const navigateRoom = () => {
+    navigation.navigate('ChatScreen')
+  }
+
+
   return (
     <SafeAreaView className='h-full bg-white'>
         <TouchableOpacity  onPress={() => navigation.goBack()} style={styles.back}><Text> <MaterialIcons color={'#000'} size={30} name='arrow-back' /> </Text></TouchableOpacity>
@@ -45,7 +51,7 @@ const DetailsScreen = () => {
                 <View className='mt-1 ml-4'>
                     <Text style={{fontFamily:'poppins-bold'}}>Appointment Type</Text>
                     <Text className='text-gray-500 font-medium'>Chat Consultation</Text>
-                    <Pressable className='px-6 py-2 bg-primary rounded-md mt-4'><Text className='text-white text-base font-bold'>Enter Chat Room </Text></Pressable>
+                    <Pressable onPress={navigateRoom}  className='px-6 py-2 bg-primary rounded-md mt-4'><Text className='text-white text-base font-bold'>Enter Chat Room </Text></Pressable>
                 </View>
             </View>
         </View>

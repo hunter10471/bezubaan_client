@@ -52,6 +52,8 @@ const styles = StyleSheet.create({
         elevation: 5,
         shadowColor: '#52006A',
         position:'relative',
+        borderLeftWidth:6,
+        borderLeftColor:'#40B37C'
     },
         avatar: {
         width: 64,

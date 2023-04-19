@@ -15,6 +15,7 @@ import BookingScreen from './screens/BookingScreen';
 import SuccessfulScreen from './screens/SuccessfulScreen';
 import AppointmentsScreen from './screens/AppointmentsScreen';
 import DetailsScreen from './screens/DetailsScreen';
+import ChatScreen from './screens/ChatScreen';
 
 
 export default function App() {
@@ -42,6 +43,7 @@ export default function App() {
           <Stack.Screen name='SuccessfulScreen' component={SuccessfulScreen} />
           <Stack.Screen name='AppointmentsScreen' component={AppointmentsScreen} />
           <Stack.Screen name='DetailsScreen' component={DetailsScreen} />
+          <Stack.Screen name='ChatScreen' component={ChatScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

@@ -11,4 +11,5 @@ export type RootStackParamList = {
   SuccessfulScreen: {id: number} | undefined;
   AppointmentsScreen: {id: number} | undefined;
   DetailsScreen: {id: number} | undefined;
+  ChatScreen: {id: number} | undefined;
 };
