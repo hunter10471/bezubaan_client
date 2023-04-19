@@ -1,4 +1,4 @@
-import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
+import { Pressable, StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React from 'react'
 import MaterialIcons from 'react-native-vector-icons/MaterialCommunityIcons'
 import images from '../../../assets/images'
@@ -20,14 +20,7 @@ const AppointmentCard = () => {
   }
   return (
     <TouchableOpacity onPress={()=>navigation.navigate('DetailsScreen')} style={styles.card}>
-      <Text className='text-xs font-medium text-gray-400'>Appointment date</Text>
-      <View className='flex-row items-center my-2 pb-3 border-b-2 border-gray-100'>
-        <MaterialIcons size={20} name='clock-outline' />
-        <Text style={{fontFamily:'poppins-medium'}} className='ml-2'>Wed Jun 20</Text>
-        <Text style={{fontFamily:'poppins-medium'}} className=' ml-2'>* 08:00 - 08:30</Text>
-        <MaterialIcons style={styles.menu} size={25} name='dots-vertical' color='gray' />
-      </View>
-      <View className='mt-2 flex-row items-center'>
+      <View className='items-center justify-between my-2 pb-3 border-b-2 border-gray-100 flex-row-reverse'>
         <TouchableOpacity >
         <Image style={styles.avatar} source={images.doctor_image} />
         </TouchableOpacity>
@@ -35,6 +28,25 @@ const AppointmentCard = () => {
         <Text style={{fontFamily:'poppins-bold'}} className='text-base'>Dr.Syed Rafay</Text>
         <Text className='text-gray-400'>Small Animal Medicine</Text>
         </View>
+      </View>
+      <Text className='text-xs font-medium text-gray-400 my-1'>Appointment date</Text>
+      <View className='flex-row items-center justify-between '>
+        <View className='flex-row items-center'>
+        <MaterialIcons size={20} color='gray' name='calendar' />    
+        <Text className='mt-[1px] text-gray-600 ml-1 text-xs' style={{fontFamily:'poppins-medium'}} >Wed Jun 20</Text>
+        </View>
+        <View className='flex-row items-center'>
+        <MaterialIcons size={20} color='gray' name='clock' />    
+        <Text className='mt-[1px] text-gray-600 ml-1 text-xs' style={{fontFamily:'poppins-medium'}} >08:00 - 08:30</Text>
+        </View>
+        <View className='flex-row items-center'>
+        <MaterialIcons size={10} color='lightgreen' name='circle' />    
+        <Text className='mt-[1px] text-gray-600 ml-1 text-xs' style={{fontFamily:'poppins-medium'}} >Confirmed</Text>  
+        </View>
+      </View>
+      <View className='flex-row justify-center mt-5'>
+        <Pressable className='bg-gray-100 p-3 rounded-xl w-[50%] mr-1'><Text className='text-base font-medium text-gray-500 text-center'>Cancel</Text></Pressable>
+        <Pressable className='bg-primary p-3 rounded-xl w-[50%] ml-1'><Text className='text-base font-medium text-white text-center'>Reschedule</Text></Pressable>
       </View>
     </TouchableOpacity>
   )
@@ -46,8 +58,9 @@ const styles = StyleSheet.create({
     card:{
         backgroundColor:'white',
         borderRadius:10,
-        paddingHorizontal:20,
-        paddingVertical:15,
+        paddingHorizontal:15,
+        paddingTop:10,
+        paddingBottom:15,
         marginBottom:15,
         elevation: 5,
         shadowColor: '#52006A',
