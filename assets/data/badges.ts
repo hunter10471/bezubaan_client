@@ -1,3 +1,3 @@
-const badges: string[] = ['Shelters', 'Popular', 'Near You'];
+const badges: string[] = ['General Physician', 'Small Animal', 'Trauma Physician'];
 
 export default badges;

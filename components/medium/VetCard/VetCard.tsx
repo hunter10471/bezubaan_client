@@ -37,13 +37,13 @@ const VetCard = ({ vet }: IVetCardProps) => {
     >
       <TouchableOpacity onPress={onClinicTap} activeOpacity={0.8}>
         <Image
-          className='w-[200px] h-[200px] rounded-t-md'
+          className='w-[150px] h-[120px] rounded-t-md'
           source={vet.image as ImageSourcePropType}
         />
-        <Text style={{fontFamily:'poppins-medium'}} className='text-heading mt-2  ml-1 px-2 '>
+        <Text style={{fontFamily:'poppins-medium'}} className='text-heading mt-2 px-2 '>
           {vet.name}
         </Text>
-        <Text className='text-gray-400 text-xs font-semibold ml-2 px-2 '>
+        <Text className='text-gray-400 text-xs font-semibold px-2 '>
           {vet.location}
         </Text>
       </TouchableOpacity>

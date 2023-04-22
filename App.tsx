@@ -16,6 +16,8 @@ import SuccessfulScreen from './screens/SuccessfulScreen';
 import AppointmentsScreen from './screens/AppointmentsScreen';
 import DetailsScreen from './screens/DetailsScreen';
 import ChatScreen from './screens/ChatScreen';
+import TabNavigator from './navigation/TabNavigator';
+import MessagesScreen from './screens/MessagesScreen';
 
 
 export default function App() {
@@ -35,7 +37,7 @@ export default function App() {
           <Stack.Screen name='OnBoardingScreen' component={OnboardingScreen} />
           <Stack.Screen name='SignupScreen' component={SignupScreen} />
           <Stack.Screen name='LoginScreen' component={LoginScreen} />
-          <Stack.Screen name='HomeScreen' component={HomeScreen} />
+          <Stack.Screen name='HomeScreen' component={TabNavigator} />
           <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
           <Stack.Screen name='ClinicScreen' component={ClinicScreen} />
           <Stack.Screen name='VetScreen' component={VetScreen} />
@@ -44,6 +46,7 @@ export default function App() {
           <Stack.Screen name='AppointmentsScreen' component={AppointmentsScreen} />
           <Stack.Screen name='DetailsScreen' component={DetailsScreen} />
           <Stack.Screen name='ChatScreen' component={ChatScreen} />
+          <Stack.Screen name='MessagesScreen' component={MessagesScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </TailwindProvider>

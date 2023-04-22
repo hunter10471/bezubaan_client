@@ -26,14 +26,9 @@ import AppLoading from 'expo-app-loading';
 import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
+import UpcomingAppointment from '../components/small/UpcomingAppointment/UpcomingAppointment';
 
 const HomeScreen = () => {
-  const [mapRegion, setmapRegion] = useState({
-    latitude: 24.8607,
-    longitude: 67.0011,
-    latitudeDelta: 0.0922,
-    longitudeDelta: 0.0421,
-  });
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   const authState = useSelector((state:RootState) => state.user)
   const onProfileTap = () => {
@@ -58,11 +53,19 @@ const HomeScreen = () => {
             <Image style={styles.avatar} source={images.default_avatar} />
           </TouchableOpacity>
         </View>
-        <View className='flex flex-row items-center gap-4 my-6 bg-gray-100  px-4 py-2 rounded-[10px]'>
+        <View className='flex flex-row items-center gap-4 my-4 bg-gray-100  px-4 py-2 rounded-xl'>
           <MaterialIcons name='search' size={15} color={'#666'} />
-          <TextInput placeholder='Search' keyboardType='default' />
+          <TextInput className='text-base' placeholder='Search' keyboardType='default' />
         </View>
-        
+         <FlatList
+          style={{marginBottom:20}}
+          horizontal
+          showsHorizontalScrollIndicator={false}
+          data={badges}
+          renderItem={({ item }) => <HomeCategoryBadge tag={item} /> }
+        />
+        <NormalHeading text='Upcoming Appointments' />
+        <UpcomingAppointment/>
         <NormalHeading text='Popular Vet Clinics' />
         <FlatList
           style={{marginVertical:20}}
@@ -79,19 +82,6 @@ const HomeScreen = () => {
           data={vets}
           renderItem={({ item }) => <VetCard vet={item} />}
         />
-          {/* <NormalHeading text='Find nearby vets' />
-        <View style={{marginTop:10}}>
-          <MapView
-            style={styles.map}
-            region={mapRegion}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}
-            />
-        </View> */}
       </View>
       {/* <View
         className='w-[80%] left-[10%] px-8 py-4 rounded-[25px] flex flex-row justify-between'

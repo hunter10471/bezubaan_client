@@ -6,9 +6,12 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import images from '../assets/images';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const SplashScreen = () => {
   const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+  const authState = useSelector(( state:RootState ) => state.user );
 
   const storeUser = async () => {
     try {
@@ -32,7 +35,7 @@ const getUser = async () => {
 const getLoggedIn = async () => {
     try {
       const userData = await AsyncStorage.getItem("loggedIn")
-      if(userData) return true;
+      if(userData && authState._id) return true;
       else return false;
 
     } catch (error) {

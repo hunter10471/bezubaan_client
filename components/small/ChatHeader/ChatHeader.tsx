@@ -13,7 +13,7 @@ const ChatHeader = (props: Props) => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
   return (
     <View className='bg-white z-20 flex-row items-center p-3 border-b-2 border-gray-200 fixed'>
-        <TouchableOpacity style={{marginLeft:10,marginRight:20,marginTop:10}}  onPress={() => navigation.goBack()}><Text> <MaterialIcons color={'#000'} size={30} name='arrow-back' /> </Text></TouchableOpacity>
+        <TouchableOpacity style={{marginRight:20,marginTop:10}}  onPress={() => navigation.goBack()}><Text> <MaterialIcons color={'#000'} size={30} name='arrow-back' /> </Text></TouchableOpacity>
          <View className='mt-2 flex-row items-center'>
         <TouchableOpacity style={{position:'relative'}} >
         <Text className='absolute z-10 bottom-[-2px] right-[-5px]'> <MaterialIcons color={'green'} size={15} name='circle' /> </Text>

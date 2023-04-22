@@ -5,7 +5,7 @@ import MaterialIcons from 'react-native-vector-icons/MaterialIcons'
 
 const ChatInput = () => {
   return (
-    <View className='bg-white fixed z-20 p-3 flex-row items-center justify-between'>
+    <View className='bg-white fixed z-20 p-3 flex-row items-center justify-between border-t-[1px] border-gray-200'>
       <Pressable className='mr-3 rotate-[320deg]'><MaterialIcons size={30} name='attachment' color='gray' /></Pressable>
       <Pressable className='mr-3'><MaterialIcons size={30} name='insert-emoticon' color='gray' /></Pressable>
       <TextInput placeholder='Type message' className='px-2 text-base flex-1' />
