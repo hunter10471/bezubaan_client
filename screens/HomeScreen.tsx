@@ -1,21 +1,19 @@
 import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-  TextInput,
-  FlatList,
-  Dimensions,
-  ScrollView,
+    StyleSheet,
+    TouchableOpacity,
+    View,
+    Image,
+    TextInput,
+    FlatList,
+    Dimensions,
+    ScrollView,
+    Pressable,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import MaterialIcons from 'react-native-vector-icons/FontAwesome5';
-import vets from '../assets/data/vets';
 import VetCard from '../components/medium/VetCard/VetCard';
-import MapView from 'react-native-maps';
 import badges from '../assets/data/badges';
 import HomeCategoryBadge from '../components/small/HomeCategoryBadge/HomeCategoryBadge';
 import { StackNavigationProp } from '@react-navigation/stack';
@@ -27,63 +25,88 @@ import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import UpcomingAppointment from '../components/small/UpcomingAppointment/UpcomingAppointment';
+import { IVet } from '../interfaces/Vet.interface';
+import { getAllVets } from '../api/vet.api';
+import { Text } from 'react-native';
 
 const HomeScreen = () => {
-  const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
-  const authState = useSelector((state:RootState) => state.user)
-  const onProfileTap = () => {
-    navigation.navigate('ProfileScreen', undefined)
-  }
+    const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const authState = useSelector((state: RootState) => state.user);
+    const [fetchedVets, setFetchedVets] = useState<IVet[]>([]);
+    const onProfileTap = () => {
+        navigation.navigate('ProfileScreen', undefined);
+    };
 
-  let [fontsLoaded] = useFonts({
-    'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
-    'poppins-regular': require('../assets/fonts/Poppins-Regular.ttf'),
-  })
-  if(!fontsLoaded){
-    return <AppLoading/>
-  }
-  return (
-    <SafeAreaView style={{ flex: 1 }} className='bg-white'>
-      <ScrollView>
+    useEffect(() => {
+        const fetchVets = async () => {
+            const data = await getAllVets();
+            if (data) setFetchedVets(data);
+        };
+        fetchVets();
+    }, []);
 
-      <View className='flex mx-6 my-4 '>
-        <View className='flex flex-row justify-between items-center'>
-          <NormalHeading text={authState.username ? `Hey there, ${authState.username}` : 'What are you looking for ?'} takesHalf />
-          <TouchableOpacity onPress={onProfileTap} >
-            <Image style={styles.avatar} source={images.default_avatar} />
-          </TouchableOpacity>
-        </View>
-        <View className='flex flex-row items-center gap-4 my-4 bg-gray-100  px-4 py-2 rounded-xl'>
-          <MaterialIcons name='search' size={15} color={'#666'} />
-          <TextInput className='text-base' placeholder='Search' keyboardType='default' />
-        </View>
-         <FlatList
-          style={{marginBottom:20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={badges}
-          renderItem={({ item }) => <HomeCategoryBadge tag={item} /> }
-        />
-        <NormalHeading text='Upcoming Appointments' />
-        <UpcomingAppointment/>
-        <NormalHeading text='Popular Vet Clinics' />
-        <FlatList
-          style={{marginVertical:20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={vets}
-          renderItem={({ item }) => <VetCard vet={item} />}
-        />
-        <NormalHeading text='Popular Vets' />
-                <FlatList
-          style={{marginVertical:20}}
-          horizontal
-          showsHorizontalScrollIndicator={false}
-          data={vets}
-          renderItem={({ item }) => <VetCard vet={item} />}
-        />
-      </View>
-      {/* <View
+    let [fontsLoaded] = useFonts({
+        'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
+        'poppins-regular': require('../assets/fonts/Poppins-Regular.ttf'),
+    });
+    if (!fontsLoaded) {
+        return <AppLoading />;
+    }
+    return (
+        <SafeAreaView style={{ flex: 1 }} className="bg-white">
+            <ScrollView>
+                <View className="flex mx-6 my-4 ">
+                    <View className="flex flex-row justify-between items-center">
+                        <NormalHeading
+                            text={
+                                authState.username
+                                    ? `Hey there, ${authState.username}`
+                                    : 'What are you looking for ?'
+                            }
+                            takesHalf
+                        />
+                        <TouchableOpacity onPress={onProfileTap}>
+                            <Image
+                                style={styles.avatar}
+                                source={{
+                                    uri: authState.avatar
+                                        ? authState.avatar
+                                        : images.default_avatar,
+                                }}
+                            />
+                        </TouchableOpacity>
+                    </View>
+                    <View className="flex flex-row justify-center items-center gap-2 my-4 bg-heading  px-4 py-2 rounded-full">
+                        <TouchableOpacity
+                            onPress={() => navigation.navigate('VetListScreen')}
+                        >
+                            <Text className="text-sm text-white font-medium">
+                                Search a Clinic, Vet or Specialty
+                            </Text>
+                        </TouchableOpacity>
+                        <MaterialIcons name="search" size={25} color={'#fff'} />
+                    </View>
+                    <FlatList
+                        style={{ marginBottom: 20 }}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={badges}
+                        renderItem={({ item }) => (
+                            <HomeCategoryBadge tag={item} />
+                        )}
+                    />
+                    <NormalHeading text="Upcoming Appointments" />
+                    <UpcomingAppointment />
+                    <NormalHeading text="Popular Vets" />
+                    <FlatList
+                        style={{ marginVertical: 20 }}
+                        horizontal
+                        showsHorizontalScrollIndicator={false}
+                        data={fetchedVets}
+                        renderItem={({ item }) => <VetCard vet={item} />}
+                    />
+                </View>
+                {/* <View
         className='w-[80%] left-[10%] px-8 py-4 rounded-[25px] flex flex-row justify-between'
         style={styles.navbar}
       >
@@ -100,28 +123,28 @@ const HomeScreen = () => {
           <MaterialIcons3 name='menu' size={20} color={'#fff'} />
         </TouchableOpacity>
       </View> */}
-        </ScrollView>
-    </SafeAreaView>
-  );
+            </ScrollView>
+        </SafeAreaView>
+    );
 };
 
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  avatar: {
-    width: 64,
-    height: 64,
-    borderRadius: 100,
-  },
-  map: {
-    width: Dimensions.get('screen').width - 50,
-    height: 200,
-    marginRight: 60,
-  },
-  navbar: {
-    position: 'absolute',
-    zIndex: 2,
-    backgroundColor: '#40B37C',
-    bottom: 30,
-  },
+    avatar: {
+        width: 64,
+        height: 64,
+        borderRadius: 100,
+    },
+    map: {
+        width: Dimensions.get('screen').width - 50,
+        height: 200,
+        marginRight: 60,
+    },
+    navbar: {
+        position: 'absolute',
+        zIndex: 2,
+        backgroundColor: '#40B37C',
+        bottom: 30,
+    },
 });

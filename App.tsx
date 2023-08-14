@@ -18,38 +18,91 @@ import DetailsScreen from './screens/DetailsScreen';
 import ChatScreen from './screens/ChatScreen';
 import TabNavigator from './navigation/TabNavigator';
 import MessagesScreen from './screens/MessagesScreen';
-
+import VetSignupScreen from './screens/VetSignupScreen';
+import VetSignup2Screen from './screens/VetSignup2Screen';
+import VetListScreen from './screens/VetListScreen';
 
 export default function App() {
-  const Stack = createNativeStackNavigator();
+    const Stack = createNativeStackNavigator();
 
-  return (
-    <Provider store={store}>
-    <TailwindProvider>
-      <NavigationContainer>
-        <Stack.Navigator
-          initialRouteName='SplashScreen'
-          screenOptions={{
-            headerShown: false,
-          }}
-          >
-          <Stack.Screen name='SplashScreen' component={SplashScreen} />
-          <Stack.Screen name='OnBoardingScreen' component={OnboardingScreen} />
-          <Stack.Screen name='SignupScreen' component={SignupScreen} />
-          <Stack.Screen name='LoginScreen' component={LoginScreen} />
-          <Stack.Screen name='HomeScreen' component={TabNavigator} />
-          <Stack.Screen name='ProfileScreen' component={ProfileScreen} />
-          <Stack.Screen name='ClinicScreen' component={ClinicScreen} />
-          <Stack.Screen name='VetScreen' component={VetScreen} />
-          <Stack.Screen name='BookingScreen' component={BookingScreen} />
-          <Stack.Screen name='SuccessfulScreen' component={SuccessfulScreen} />
-          <Stack.Screen name='AppointmentsScreen' component={AppointmentsScreen} />
-          <Stack.Screen name='DetailsScreen' component={DetailsScreen} />
-          <Stack.Screen name='ChatScreen' component={ChatScreen} />
-          <Stack.Screen name='MessagesScreen' component={MessagesScreen} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </TailwindProvider>
-          </Provider>
-  );
+    return (
+        <Provider store={store}>
+            <TailwindProvider>
+                <NavigationContainer>
+                    <Stack.Navigator
+                        initialRouteName="SplashScreen"
+                        screenOptions={{
+                            headerShown: false,
+                        }}
+                    >
+                        <Stack.Screen
+                            name="SplashScreen"
+                            component={SplashScreen}
+                        />
+                        <Stack.Screen
+                            name="OnBoardingScreen"
+                            component={OnboardingScreen}
+                        />
+                        <Stack.Screen
+                            name="SignupScreen"
+                            component={SignupScreen}
+                        />
+                        <Stack.Screen
+                            name="LoginScreen"
+                            component={LoginScreen}
+                        />
+                        <Stack.Screen
+                            name="HomeScreen"
+                            component={TabNavigator}
+                        />
+                        <Stack.Screen
+                            name="ProfileScreen"
+                            component={ProfileScreen}
+                        />
+                        <Stack.Screen
+                            name="ClinicScreen"
+                            component={ClinicScreen}
+                        />
+                        <Stack.Screen name="VetScreen" component={VetScreen} />
+                        <Stack.Screen
+                            name="BookingScreen"
+                            component={BookingScreen}
+                        />
+                        <Stack.Screen
+                            name="SuccessfulScreen"
+                            component={SuccessfulScreen}
+                        />
+                        <Stack.Screen
+                            name="AppointmentsScreen"
+                            component={AppointmentsScreen}
+                        />
+                        <Stack.Screen
+                            name="DetailsScreen"
+                            component={DetailsScreen}
+                        />
+                        <Stack.Screen
+                            name="ChatScreen"
+                            component={ChatScreen}
+                        />
+                        <Stack.Screen
+                            name="MessagesScreen"
+                            component={MessagesScreen}
+                        />
+                        <Stack.Screen
+                            name="VetSignupScreen"
+                            component={VetSignupScreen}
+                        />
+                        <Stack.Screen
+                            name="VetSignup2Screen"
+                            component={VetSignup2Screen}
+                        />
+                        <Stack.Screen
+                            name="VetListScreen"
+                            component={VetListScreen}
+                        />
+                    </Stack.Navigator>
+                </NavigationContainer>
+            </TailwindProvider>
+        </Provider>
+    );
 }
