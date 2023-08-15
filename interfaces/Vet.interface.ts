@@ -30,4 +30,11 @@ export interface IVet {
     address: string;
 
     licenseNumber: string;
+
+    location: {
+        type: string;
+        coordinates: number[];
+    };
+
+    description: string;
 }

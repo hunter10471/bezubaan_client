@@ -13,6 +13,7 @@ import AppLoading from 'expo-app-loading';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../../../interfaces/navigation.interface';
 import { useNavigation } from '@react-navigation/native';
+import images from '../../../assets/images';
 
 interface IVetCardProps {
     vet: IVet;
@@ -28,7 +29,7 @@ const VetCard = ({ vet }: IVetCardProps) => {
     }
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const onClinicTap = () => {
-        navigation.navigate('ClinicScreen', undefined);
+        navigation.navigate('ClinicScreen', { vet });
     };
     return (
         <View
@@ -36,10 +37,20 @@ const VetCard = ({ vet }: IVetCardProps) => {
             className="pb-4 m-1 shadow-xl bg-white rounded-md "
         >
             <TouchableOpacity onPress={onClinicTap} activeOpacity={0.8}>
-                <Image
-                    className="w-[150px] h-[120px] rounded-t-md"
-                    source={{ uri: vet.avatar }}
-                />
+                {vet.avatar ? (
+                    <Image
+                        className="w-[150px] h-[120px] rounded-t-md"
+                        source={{
+                            uri: vet.avatar,
+                        }}
+                    />
+                ) : (
+                    <Image
+                        className="w-[150px] h-[120px] rounded-t-md"
+                        source={images.default_avatar}
+                    />
+                )}
+
                 <Text
                     style={{ fontFamily: 'poppins-medium' }}
                     className="text-heading mt-2 px-2 "

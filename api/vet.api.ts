@@ -75,3 +75,20 @@ export const getAllVets = async () => {
         console.error(error);
     }
 };
+
+export const getClosestVets = async (lat: number, long: number) => {
+    const url = `${baseUrl}/vet/get-vets-by-distance/${lat}/${long}`;
+    try {
+        const res = await axios.get<IVet[]>(url);
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error(
+                'Axios request failed',
+                error.response?.data,
+                error.toJSON()
+            );
+        }
+        console.error(error);
+    }
+};

@@ -6,9 +6,16 @@ import AppLoading from 'expo-app-loading';
 interface INormalHeadingProps {
     text: string;
     takesHalf?: boolean;
+    small?: boolean;
+    gray?: boolean;
 }
 
-const NormalHeading = ({ text, takesHalf }: INormalHeadingProps) => {
+const NormalHeading = ({
+    text,
+    takesHalf,
+    small,
+    gray,
+}: INormalHeadingProps) => {
     let [fontsLoaded] = useFonts({
         'poppins-bold': require('../../../assets/fonts/Poppins-Bold.ttf'),
         'poppins-regular': require('../../../assets/fonts/Poppins-Regular.ttf'),
@@ -20,7 +27,9 @@ const NormalHeading = ({ text, takesHalf }: INormalHeadingProps) => {
     return (
         <Text
             style={{ fontFamily: 'poppins-bold' }}
-            className={` text-heading text-xl ${takesHalf && ' w-[50%]'}`}
+            className={` ${gray ? 'text-neutral-500' : 'text-heading'} ${
+                small ? 'text-sm' : 'text-xl'
+            } ${takesHalf && ' w-[50%]'}`}
         >
             {text}
         </Text>

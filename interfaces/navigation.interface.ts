@@ -1,3 +1,5 @@
+import { IVet } from './Vet.interface';
+
 export type RootStackParamList = {
     HomeScreen: { id: number } | undefined;
     SplashScreen: { id: number } | undefined;
@@ -5,9 +7,9 @@ export type RootStackParamList = {
     SignupScreen: { id: number } | undefined;
     LoginScreen: { id: number } | undefined;
     ProfileScreen: { id: number } | undefined;
-    ClinicScreen: { id: number } | undefined;
-    VetScreen: { id: number } | undefined;
-    BookingScreen: { id: number } | undefined;
+    ClinicScreen: { vet: IVet } | undefined;
+    VetScreen: { vet: IVet } | undefined;
+    BookingScreen: { vet: IVet; appointmentDate: string } | undefined;
     SuccessfulScreen: { id: number } | undefined;
     AppointmentsScreen: { id: number } | undefined;
     DetailsScreen: { id: number } | undefined;

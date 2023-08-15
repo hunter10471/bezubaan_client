@@ -28,14 +28,47 @@ import UpcomingAppointment from '../components/small/UpcomingAppointment/Upcomin
 import { IVet } from '../interfaces/Vet.interface';
 import { getAllVets } from '../api/vet.api';
 import { Text } from 'react-native';
+import * as Location from 'expo-location';
+import { updateUser } from '../api/user.api';
+import { useDispatch } from 'react-redux';
+import { updateLocation } from '../redux/slices/userSlice';
 
 const HomeScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const authState = useSelector((state: RootState) => state.user);
+    const dispatch = useDispatch();
     const [fetchedVets, setFetchedVets] = useState<IVet[]>([]);
     const onProfileTap = () => {
         navigation.navigate('ProfileScreen', undefined);
     };
+
+    useEffect(() => {
+        const getPermissions = async () => {
+            if (!authState.lat || !authState.long) {
+                let { status } =
+                    await Location.requestForegroundPermissionsAsync();
+                if (status === 'granted' && authState._id) {
+                    let currentLocation =
+                        await Location.getCurrentPositionAsync();
+                    const { latitude, longitude } = currentLocation.coords;
+                    await updateUser(
+                        {
+                            location: {
+                                type: 'Point',
+                                coordinates: [longitude, latitude],
+                            },
+                        },
+                        authState._id
+                    );
+                    dispatch(
+                        updateLocation({ lat: latitude, long: longitude })
+                    );
+                }
+            }
+        };
+        getPermissions();
+    }),
+        [];
 
     useEffect(() => {
         const fetchVets = async () => {
@@ -66,25 +99,37 @@ const HomeScreen = () => {
                             takesHalf
                         />
                         <TouchableOpacity onPress={onProfileTap}>
-                            <Image
-                                style={styles.avatar}
-                                source={{
-                                    uri: authState.avatar
-                                        ? authState.avatar
-                                        : images.default_avatar,
-                                }}
-                            />
+                            {authState.avatar ? (
+                                <Image
+                                    style={styles.avatar}
+                                    source={{
+                                        uri: authState.avatar,
+                                    }}
+                                />
+                            ) : (
+                                <Image
+                                    style={styles.avatar}
+                                    source={images.default_avatar}
+                                />
+                            )}
                         </TouchableOpacity>
                     </View>
-                    <View className="flex flex-row justify-center items-center gap-2 my-4 bg-heading  px-4 py-2 rounded-full">
+                    <View
+                        style={styles.search}
+                        className="flex flex-row justify-center items-center gap-4 my-4 bg-neutral-100  px-4 py-2 rounded-full"
+                    >
                         <TouchableOpacity
                             onPress={() => navigation.navigate('VetListScreen')}
                         >
-                            <Text className="text-sm text-white font-medium">
+                            <Text className="text-sm font-bold">
                                 Search a Clinic, Vet or Specialty
                             </Text>
                         </TouchableOpacity>
-                        <MaterialIcons name="search" size={25} color={'#fff'} />
+                        <MaterialIcons
+                            name="search"
+                            size={25}
+                            color={'#010101'}
+                        />
                     </View>
                     <FlatList
                         style={{ marginBottom: 20 }}
@@ -106,23 +151,6 @@ const HomeScreen = () => {
                         renderItem={({ item }) => <VetCard vet={item} />}
                     />
                 </View>
-                {/* <View
-        className='w-[80%] left-[10%] px-8 py-4 rounded-[25px] flex flex-row justify-between'
-        style={styles.navbar}
-      >
-        <TouchableOpacity>
-          <MaterialIcons2 name='home' size={20} color={'#fff'} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialIcons3 name='document-outline' size={20} color={'#fff'} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialIcons4 name='users' size={20} color={'#fff'} />
-        </TouchableOpacity>
-        <TouchableOpacity>
-          <MaterialIcons3 name='menu' size={20} color={'#fff'} />
-        </TouchableOpacity>
-      </View> */}
             </ScrollView>
         </SafeAreaView>
     );
@@ -146,5 +174,9 @@ const styles = StyleSheet.create({
         zIndex: 2,
         backgroundColor: '#40B37C',
         bottom: 30,
+    },
+    search: {
+        elevation: 2,
+        shadowColor: '#52006A',
     },
 });

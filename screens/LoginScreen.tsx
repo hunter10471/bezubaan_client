@@ -49,7 +49,7 @@ const LoginScreen = () => {
                 dispatch(login(user));
                 setError(false);
                 setSuccess(true);
-                await AsyncStorage.setItem('loggedIn', 'true');
+                await AsyncStorage.setItem('loggedIn', JSON.stringify(user));
                 navigation.navigate('HomeScreen', undefined);
             } else throw new Error('There was an error logging in the user.');
         } catch (error) {

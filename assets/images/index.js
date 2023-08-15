@@ -18,10 +18,11 @@ const images = {
     walking_dog: require('./walking_dog.png'),
     playful_cat: require('./playful_cat.png'),
     google: require('./google.png'),
-    white_logo: require('./white_logo.png'),
+    white_logo: require('./new_logo_2.png'),
     doctor_image: require('./doctor_img.jpg'),
     doctors: require('./doctors.png'),
     not_found_list: require('./not-found-list.png'),
+    marker: require('./marker.png'),
 };
 
 module.exports = images;

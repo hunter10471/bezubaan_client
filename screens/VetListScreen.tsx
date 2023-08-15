@@ -12,27 +12,25 @@ import {
     StyleSheet,
     TextInput,
     TouchableOpacity,
+    TouchableWithoutFeedback,
 } from 'react-native';
-import useFetchVets from '../hooks/useFetchVets';
 import { View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import NotFound from '../components/small/NotFound/NotFound';
 import VetListItem from '../components/small/VetListItem/VetListItem';
+import useFetchVets from '../hooks/useFetchVets';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 
 const VetListScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const authState = useSelector((state: RootState) => state.user);
     const [focus, setFocus] = useState(false);
-    const show = useRef(false);
-    const { vets, query, setQuery, loading } = useFetchVets();
+    const { vets, closeVets, setQuery, loading } = useFetchVets();
     const onBackPress = () => {
         navigation.navigate('HomeScreen', undefined);
     };
-
-    useEffect(() => {
-        if (!show.current) {
-            show.current = true;
-        }
-    }, [loading]);
 
     return (
         <SafeAreaView style={{ flex: 1 }} className="bg-white">
@@ -62,14 +60,35 @@ const VetListScreen = () => {
                             className={`text-sm`}
                             placeholder="Search a Clinic, Vet or Specialty"
                             keyboardType="default"
-                            onChange={(text: any) => {
+                            onChangeText={(text) => {
                                 setQuery(text);
                             }}
                             onFocus={() => setFocus(true)}
                             onBlur={() => setFocus(false)}
                         />
                     </View>
-                    {vets.length === 0 && !show && !loading ? (
+                    {authState.lat &&
+                        authState.long &&
+                        closeVets?.length > 0 && (
+                            <View className="m-2">
+                                <NormalHeading
+                                    text="Vets Near You"
+                                    gray
+                                    small
+                                />
+                                <FlatList
+                                    className="W-full"
+                                    data={closeVets}
+                                    renderItem={({ item }) => (
+                                        <VetListItem
+                                            key={item.avatar}
+                                            vet={item}
+                                        />
+                                    )}
+                                />
+                            </View>
+                        )}
+                    {vets.length === 0 && closeVets.length === 0 && !loading ? (
                         <NotFound />
                     ) : loading ? (
                         <ActivityIndicator
@@ -78,12 +97,19 @@ const VetListScreen = () => {
                             color="#40B37C"
                         />
                     ) : (
-                        <FlatList
-                            data={vets}
-                            renderItem={({ item }) => (
-                                <VetListItem vet={item} />
-                            )}
-                        />
+                        <View className="m-2">
+                            <NormalHeading
+                                text="Popular Vet Clinics"
+                                gray
+                                small
+                            />
+                            <FlatList
+                                data={vets}
+                                renderItem={({ item }) => (
+                                    <VetListItem key={item.avatar} vet={item} />
+                                )}
+                            />
+                        </View>
                     )}
                 </View>
             </ScrollView>
