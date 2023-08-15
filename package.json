@@ -50,7 +50,7 @@
     "react-native-shared-element": "^0.8.8",
     "react-native-snap-carousel": "^3.9.1",
     "react-native-vector-icons": "^9.2.0",
-    "react-native-web": "~0.18.9",
+    "react-native-web": "~0.19.5",
     "react-redux": "^8.0.5",
     "redux": "^4.2.1",
     "redux-thunk": "^2.4.2",
