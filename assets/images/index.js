@@ -23,6 +23,7 @@ const images = {
     doctors: require('./doctors.png'),
     not_found_list: require('./not-found-list.png'),
     marker: require('./marker.png'),
+    easypaisa: require('./easypaisa.jpg'),
 };
 
 module.exports = images;

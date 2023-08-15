@@ -39,7 +39,10 @@ const HomeScreen = () => {
     const dispatch = useDispatch();
     const [fetchedVets, setFetchedVets] = useState<IVet[]>([]);
     const onProfileTap = () => {
-        navigation.navigate('ProfileScreen', undefined);
+        if (authState._id) {
+            navigation.navigate('ProfileScreen', undefined);
+        }
+        navigation.navigate('LoginScreen', undefined);
     };
 
     useEffect(() => {
@@ -71,11 +74,11 @@ const HomeScreen = () => {
         [];
 
     useEffect(() => {
-        const fetchVets = async () => {
+        const fetchData = async () => {
             const data = await getAllVets();
             if (data) setFetchedVets(data);
         };
-        fetchVets();
+        fetchData();
     }, []);
 
     let [fontsLoaded] = useFonts({

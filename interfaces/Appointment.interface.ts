@@ -10,9 +10,11 @@ export interface IAppointment {
     paymentStatus: PaymentStatus;
     type: Type;
     amount: number;
-    vetId: IVet;
-    userId: IUser;
-    petId: IPet;
+    vetId: string;
+    userId: string;
+    petId: string;
     review: string;
     rating: number;
 }
+
+export interface ICreateAppointment extends Omit<IAppointment, '_id'> {}

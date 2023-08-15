@@ -1,6 +1,7 @@
 import {
     Animated,
     Easing,
+    FlatList,
     Image,
     Pressable,
     ScrollView,
@@ -24,19 +25,30 @@ import { Calendar, DateData } from 'react-native-calendars';
 import TimePills from '../components/medium/TimePills/TimePills';
 import { IVet } from '../interfaces/Vet.interface';
 import moment from 'moment';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
+import PetItem from '../components/medium/PetItem/PetItem';
+import { getUserPets } from '../api/pet.api';
+import { getUserAppointments } from '../api/appointment.api';
+import { updateAppointments, updatePets } from '../redux/slices/userSlice';
+import { useDispatch } from 'react-redux';
+import { IPet } from '../interfaces/Pet.interface';
 
 const VetScreen = ({ route }: { route: any }) => {
     const vet: IVet = route.params.vet;
+    const authState = useSelector((state: RootState) => state.user);
     const dimensions = useWindowDimensions();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const [pet, setPet] = useState<IPet>();
     const [date, setDate] = useState<string>('');
     const [time, setTime] = useState<string>('');
     const [appointmentDate, setAppointmentDate] = useState<string>('');
     const [animation, setAnimation] = useState(new Animated.Value(0));
     const [disabled, setDisabled] = useState(true);
+    const dispatch = useDispatch();
 
     useEffect(() => {
-        if (date !== '' && time !== '') {
+        if (date !== '' && time !== '' && pet) {
             const combinedDate = moment(`${date} ${time}`, 'YYYY-MM-DD HH:mm');
             const jsDate = combinedDate.toDate();
             setAppointmentDate(jsDate.toString());
@@ -69,6 +81,25 @@ const VetScreen = ({ route }: { route: any }) => {
         startAnimation();
         setDate(day.dateString);
     };
+
+    useEffect(() => {
+        const fetchData = async () => {
+            if (authState._id) {
+                if (authState.pets) {
+                    const pets = await getUserPets(authState._id);
+                    if (pets) dispatch(updatePets(pets));
+                }
+                if (authState.appointments) {
+                    const appointments = await getUserAppointments(
+                        authState._id
+                    );
+                    if (appointments)
+                        dispatch(updateAppointments(appointments));
+                }
+            }
+        };
+        fetchData();
+    }, []);
 
     return (
         <SafeAreaView className="h-full bg-white">
@@ -142,14 +173,31 @@ const VetScreen = ({ route }: { route: any }) => {
                             </Text>
                             <Text className="text-base text-gray-600">
                                 Meet {vet.username}, an experienced vet with a
-                                passion for equine medicine. With over{' '}
-                                {vet.yearsOfExperience} years of experience,
-                                {vet.username} specializes in treating
-                                {vet.specializations.join(',')}.
+                                passion for equine medicine.{'\n'}With over{' '}
+                                {vet.yearsOfExperience} years of experience,{' '}
+                                {vet.username} specializes in treating{' '}
+                                {vet.specializations.join(',')}.{'\n'}
                                 {vet.description}
                             </Text>
                         </>
                     )}
+                    <View>
+                        <Text className="text-lg font-bold text-gray-700 my-4">
+                            Who's getting checked ?
+                        </Text>
+                        <FlatList
+                            className="flex-1"
+                            data={authState.pets}
+                            horizontal
+                            renderItem={({ item }) => (
+                                <PetItem
+                                    setPet={setPet}
+                                    petId={pet?._id}
+                                    pet={item}
+                                />
+                            )}
+                        />
+                    </View>
                     <Text className="text-lg font-bold text-gray-700 my-8">
                         Choose an appointment slot
                     </Text>
@@ -181,13 +229,15 @@ const VetScreen = ({ route }: { route: any }) => {
                             time={time}
                         />
                     </Animated.View>
+
                     <Pressable
                         disabled={appointmentDate === null}
                         onPress={() => {
-                            if (appointmentDate)
+                            if (appointmentDate && pet?._id)
                                 navigation.navigate('BookingScreen', {
                                     vet,
                                     appointmentDate,
+                                    petId: pet._id,
                                 });
                         }}
                         className={`${

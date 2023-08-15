@@ -1,6 +1,8 @@
 import { FieldOfStudy, Gender, University } from '../common/enum';
 
 export interface IVet {
+    _id: string;
+
     username: string;
 
     email: string;
@@ -37,4 +39,6 @@ export interface IVet {
     };
 
     description: string;
+
+    fee: number;
 }

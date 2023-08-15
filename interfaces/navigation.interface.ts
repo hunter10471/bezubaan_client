@@ -1,3 +1,5 @@
+import { IAppointment } from './Appointment.interface';
+import { IPet } from './Pet.interface';
 import { IVet } from './Vet.interface';
 
 export type RootStackParamList = {
@@ -9,8 +11,10 @@ export type RootStackParamList = {
     ProfileScreen: { id: number } | undefined;
     ClinicScreen: { vet: IVet } | undefined;
     VetScreen: { vet: IVet } | undefined;
-    BookingScreen: { vet: IVet; appointmentDate: string } | undefined;
-    SuccessfulScreen: { id: number } | undefined;
+    BookingScreen:
+        | { vet: IVet; appointmentDate: string; petId: string }
+        | undefined;
+    SuccessfulScreen: { appointment: IAppointment } | undefined;
     AppointmentsScreen: { id: number } | undefined;
     DetailsScreen: { id: number } | undefined;
     ChatScreen: { id: number } | undefined;

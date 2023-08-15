@@ -1,4 +1,5 @@
 import {
+    ActivityIndicator,
     Pressable,
     StyleSheet,
     Text,
@@ -6,19 +7,33 @@ import {
     TouchableOpacity,
     View,
 } from 'react-native';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
 import MaterialIcons from 'react-native-vector-icons/MaterialIcons';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Type } from '../common/enum';
+import { PaymentStatus, Status, Type } from '../common/enum';
+import { createAppointment } from '../api/appointment.api';
+import { IVet } from '../interfaces/Vet.interface';
+import { useSelector } from 'react-redux';
+import { RootState } from '../redux/store';
 
 const BookingScreen = ({ route }: { route: any }) => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const authState = useSelector((state: RootState) => state.user);
     const [type, setType] = useState<Type>();
-    const { vet, appointmentDate } = route.params;
+    const [loading, setLoading] = useState(false);
+    const [disabled, setDisabled] = useState(true);
+    const [review, setReview] = useState<string>('');
+
+    const {
+        vet,
+        appointmentDate,
+        petId,
+    }: { vet: IVet; appointmentDate: string; petId: string } = route.params;
+
     const date = new Date(appointmentDate);
 
     const methodPress = (method: 'chat' | 'visit') => {
@@ -28,6 +43,42 @@ const BookingScreen = ({ route }: { route: any }) => {
             setType(Type.PHYSICAL);
         }
     };
+
+    const onSubmit = async () => {
+        try {
+            if (authState._id && type) {
+                setLoading(true);
+                const response = await createAppointment({
+                    type,
+                    amount: vet.fee,
+                    appointmentDate: date,
+                    paymentStatus: PaymentStatus.UNPAID,
+                    petId,
+                    rating: 5,
+                    review,
+                    status: Status.PENDING,
+                    userId: authState._id,
+                    vetId: vet._id,
+                });
+                if (response)
+                    navigation.navigate('SuccessfulScreen', {
+                        appointment: response,
+                    });
+            }
+        } catch (error) {
+            console.log(error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    useEffect(() => {
+        if (!type) {
+            setDisabled(true);
+        } else {
+            setDisabled(false);
+        }
+    }, [type]);
 
     return (
         <SafeAreaView className="h-full bg-white">
@@ -93,6 +144,7 @@ const BookingScreen = ({ route }: { route: any }) => {
                 </View>
                 <NormalHeading text="List symptoms or any special notes you'd like the doctor to know" />
                 <TextInput
+                    onChangeText={(text) => setReview(text)}
                     style={{ height: 200, textAlignVertical: 'top' }}
                     multiline
                     numberOfLines={10}
@@ -100,11 +152,17 @@ const BookingScreen = ({ route }: { route: any }) => {
                     placeholder="List any relevant symptoms..."
                 />
                 <Pressable
-                    onPress={() => navigation.navigate('SuccessfulScreen')}
-                    className="bg-primary py-4 w-full px-4 rounded-xl my-2"
+                    onPress={onSubmit}
+                    className={`${
+                        disabled ? 'bg-neutral-300' : 'bg-primary'
+                    }  py-4 w-full px-4 rounded-xl my-2`}
                 >
                     <Text className="text-center text-white font-bold">
-                        Confirm Your Appointment
+                        {loading ? (
+                            <ActivityIndicator color="#fff" />
+                        ) : (
+                            'Confirm Your Appointment'
+                        )}
                     </Text>
                 </Pressable>
             </View>

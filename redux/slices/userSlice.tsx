@@ -1,5 +1,7 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { IUser, IUserInitialState } from '../../interfaces/User.interface';
+import { IPet } from '../../interfaces/Pet.interface';
+import { IAppointment } from '../../interfaces/Appointment.interface';
 
 const initialState: IUserInitialState = {
     username: undefined,
@@ -52,8 +54,15 @@ const userSlice = createSlice({
             state.lat = action.payload.lat;
             state.long = action.payload.long;
         },
+        updatePets: (state, action: PayloadAction<IPet[]>) => {
+            state.pets = action.payload;
+        },
+        updateAppointments: (state, action: PayloadAction<IAppointment[]>) => {
+            state.appointments = action.payload;
+        },
     },
 });
 
-export const { login, logout, updateLocation } = userSlice.actions;
+export const { login, logout, updateLocation, updatePets, updateAppointments } =
+    userSlice.actions;
 export default userSlice.reducer;
