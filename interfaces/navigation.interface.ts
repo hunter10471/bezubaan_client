@@ -16,9 +16,16 @@ export type RootStackParamList = {
         | undefined;
     SuccessfulScreen: { appointment: IAppointment } | undefined;
     AppointmentsScreen: { id: number } | undefined;
-    DetailsScreen: { id: number } | undefined;
+    DetailsScreen:
+        | {
+              appointment: IAppointment;
+              vet: IVet;
+              formattedTimeRange: string;
+              formattedDate: string;
+          }
+        | undefined;
     ChatScreen: { id: number } | undefined;
     MessagesScreen: { id: number } | undefined;
     VetSignupScreen: { id: number } | undefined;
-    VetListScreen: { id: number } | undefined;
+    VetListScreen: { tag: string } | undefined;
 };

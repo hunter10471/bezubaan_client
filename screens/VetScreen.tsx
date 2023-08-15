@@ -29,10 +29,14 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import PetItem from '../components/medium/PetItem/PetItem';
 import { getUserPets } from '../api/pet.api';
-import { getUserAppointments } from '../api/appointment.api';
+import {
+    getUserAppointments,
+    getVetAppointments,
+} from '../api/appointment.api';
 import { updateAppointments, updatePets } from '../redux/slices/userSlice';
 import { useDispatch } from 'react-redux';
 import { IPet } from '../interfaces/Pet.interface';
+import { IAppointment } from '../interfaces/Appointment.interface';
 
 const VetScreen = ({ route }: { route: any }) => {
     const vet: IVet = route.params.vet;
@@ -43,9 +47,37 @@ const VetScreen = ({ route }: { route: any }) => {
     const [date, setDate] = useState<string>('');
     const [time, setTime] = useState<string>('');
     const [appointmentDate, setAppointmentDate] = useState<string>('');
+    const [bookedTimes, setBookedTimes] = useState<string[]>([]);
     const [animation, setAnimation] = useState(new Animated.Value(0));
     const [disabled, setDisabled] = useState(true);
     const dispatch = useDispatch();
+    const todayFormatted = moment().format('YYYY-MM-DD');
+    const nextMonthFormatted = moment().add(1, 'month').format('YYYY-MM-DD');
+    const [loading, setLoading] = useState(false);
+    const [appointments, setAppointments] = useState<IAppointment[]>([]);
+    let disabledDates: Record<string, { disabled: boolean }> = {};
+    let appointmentCounts: Record<string, number> = {};
+
+    useEffect(() => {
+        if (appointments.length !== 0) {
+            disabledDates = {};
+            appointmentCounts = {};
+            appointments.forEach((appointment) => {
+                const { appointmentDate, paymentStatus, status } = appointment;
+                const dateStr = moment(appointmentDate).format('YYYY-MM-DD');
+
+                if (paymentStatus === 'paid' && status === 'pending') {
+                    appointmentCounts[dateStr] =
+                        (appointmentCounts[dateStr] || 0) + 1;
+                }
+            });
+            Object.keys(appointmentCounts).forEach((dateStr) => {
+                if (appointmentCounts[dateStr] > 10) {
+                    disabledDates[dateStr] = { disabled: true };
+                }
+            });
+        }
+    }, [appointments]);
 
     useEffect(() => {
         if (date !== '' && time !== '' && pet) {
@@ -78,12 +110,29 @@ const VetScreen = ({ route }: { route: any }) => {
     };
 
     const onDayPress = (day: DateData) => {
-        startAnimation();
+        setLoading(true);
+
+        const appointmentTimes: string[] = [];
         setDate(day.dateString);
+        appointments.forEach((appointment) => {
+            const { appointmentDate } = appointment;
+            const appointmentDateStr =
+                moment(appointmentDate).format('YYYY-MM-DD');
+            if (appointmentDateStr === date) {
+                const appointmentTime = moment(appointmentDate).format('HH:mm');
+                appointmentTimes.push(appointmentTime);
+            }
+        });
+        setLoading(false);
+        setBookedTimes(appointmentTimes);
+        startAnimation();
     };
 
     useEffect(() => {
         const fetchData = async () => {
+            setLoading(true);
+            const vetAppointments = await getVetAppointments(vet._id);
+            if (vetAppointments) setAppointments(vetAppointments);
             if (authState._id) {
                 if (authState.pets) {
                     const pets = await getUserPets(authState._id);
@@ -97,6 +146,7 @@ const VetScreen = ({ route }: { route: any }) => {
                         dispatch(updateAppointments(appointments));
                 }
             }
+            setLoading(false);
         };
         fetchData();
     }, []);
@@ -146,7 +196,7 @@ const VetScreen = ({ route }: { route: any }) => {
                             {vet.fieldOfStudy}
                         </Text>
                     </View>
-                    <TouchableOpacity>
+                    {/* <TouchableOpacity>
                         <AirbnbRating
                             size={20}
                             defaultRating={0}
@@ -156,7 +206,7 @@ const VetScreen = ({ route }: { route: any }) => {
                         <Text className="text-yellow-500 font-medium">
                             0 Ratings
                         </Text>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                     <View className="w-full mt-4">
                         <QualificationLine
                             title={`${vet.yearsOfExperience}+ Years of veterinary experience`}
@@ -206,12 +256,17 @@ const VetScreen = ({ route }: { route: any }) => {
                         className="flex-row w-full"
                     >
                         <Calendar
+                            displayLoadingIndicator={loading}
+                            allowSelectionOutOfRange={false}
+                            minDate={todayFormatted}
+                            maxDate={nextMonthFormatted}
                             markedDates={{
                                 [date]: {
                                     selected: true,
                                     disableTouchEvent: true,
                                     selectedColor: '#40B37C',
                                 },
+                                ...disabledDates,
                             }}
                             onDayPress={onDayPress}
                             style={{
@@ -227,6 +282,7 @@ const VetScreen = ({ route }: { route: any }) => {
                             toTime="16:30"
                             setTime={setTime}
                             time={time}
+                            bookedTimes={bookedTimes}
                         />
                     </Animated.View>
 

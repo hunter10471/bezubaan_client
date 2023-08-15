@@ -21,7 +21,7 @@ import FacilityBox from '../components/small/FacilityBox/FacilityBox';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
-import MapView, { Callout, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
 import { IVet } from '../interfaces/Vet.interface';
 
 const ClinicScreen = ({ route }: { route: any }) => {

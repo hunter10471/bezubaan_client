@@ -15,6 +15,8 @@ import { RootStackParamList } from '../../../interfaces/navigation.interface';
 import { useNavigation } from '@react-navigation/native';
 import images from '../../../assets/images';
 import { IVet } from '../../../interfaces/Vet.interface';
+import { RootState } from '../../../redux/store';
+import { useSelector } from 'react-redux';
 
 interface IClinicCardProps {
     name: string;
@@ -39,6 +41,8 @@ const ClinicCard = ({
 }: IClinicCardProps) => {
     const { width } = useWindowDimensions();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
+    const authState = useSelector((state: RootState) => state.user);
+
     return (
         <View style={{ ...styles.ClinicCard, width: width - 50 }}>
             <View className="flex-row">
@@ -101,7 +105,11 @@ const ClinicCard = ({
                 </View>
             </View>
             <Pressable
-                onPress={() => navigation.navigate('VetScreen', { vet })}
+                onPress={() =>
+                    authState._id
+                        ? navigation.navigate('VetScreen', { vet })
+                        : navigation.navigate('LoginScreen')
+                }
                 className="bg-primary py-2 px-4 rounded-xl mt-2"
             >
                 <Text className="text-center text-white font-bold">

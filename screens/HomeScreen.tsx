@@ -8,6 +8,7 @@ import {
     Dimensions,
     ScrollView,
     Pressable,
+    Alert,
 } from 'react-native';
 import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -32,6 +33,7 @@ import * as Location from 'expo-location';
 import { updateUser } from '../api/user.api';
 import { useDispatch } from 'react-redux';
 import { updateLocation } from '../redux/slices/userSlice';
+import MapView, { Callout, Marker } from 'react-native-maps';
 
 const HomeScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
@@ -45,30 +47,27 @@ const HomeScreen = () => {
         navigation.navigate('LoginScreen', undefined);
     };
 
-    useEffect(() => {
-        const getPermissions = async () => {
-            if (!authState.lat || !authState.long) {
-                let { status } =
-                    await Location.requestForegroundPermissionsAsync();
-                if (status === 'granted' && authState._id) {
-                    let currentLocation =
-                        await Location.getCurrentPositionAsync();
-                    const { latitude, longitude } = currentLocation.coords;
-                    await updateUser(
-                        {
-                            location: {
-                                type: 'Point',
-                                coordinates: [longitude, latitude],
-                            },
+    const getPermissions = async () => {
+        if (!authState.lat || !authState.long) {
+            let { status } = await Location.requestForegroundPermissionsAsync();
+            if (status === 'granted' && authState._id) {
+                let currentLocation = await Location.getCurrentPositionAsync();
+                const { latitude, longitude } = currentLocation.coords;
+                await updateUser(
+                    {
+                        location: {
+                            type: 'Point',
+                            coordinates: [longitude, latitude],
                         },
-                        authState._id
-                    );
-                    dispatch(
-                        updateLocation({ lat: latitude, long: longitude })
-                    );
-                }
+                    },
+                    authState._id
+                );
+                dispatch(updateLocation({ lat: latitude, long: longitude }));
             }
-        };
+        }
+    };
+
+    useEffect(() => {
         getPermissions();
     }),
         [];
@@ -145,7 +144,7 @@ const HomeScreen = () => {
                     />
                     <NormalHeading text="Upcoming Appointments" />
                     <UpcomingAppointment />
-                    <NormalHeading text="Popular Vets" />
+                    <NormalHeading text="Explore Our Vets" />
                     <FlatList
                         style={{ marginVertical: 20 }}
                         horizontal
@@ -153,6 +152,32 @@ const HomeScreen = () => {
                         data={fetchedVets}
                         renderItem={({ item }) => <VetCard vet={item} />}
                     />
+                    <NormalHeading text="Find Vets In Your City" />
+                    <MapView
+                        style={styles.map}
+                        initialRegion={{
+                            latitude: authState.location?.coordinates[0]
+                                ? authState.location?.coordinates[0]
+                                : 24.8607,
+                            longitude: authState.location?.coordinates[1]
+                                ? authState.location?.coordinates[1]
+                                : 67.0011,
+                            latitudeDelta: 0.0922,
+                            longitudeDelta: 0.0421,
+                        }}
+                    >
+                        {fetchedVets.map((vet) => (
+                            <Marker
+                                pinColor="#000"
+                                coordinate={{
+                                    latitude: vet.location.coordinates[0],
+                                    longitude: vet.location.coordinates[1],
+                                }}
+                                title={vet.clinicName}
+                                description={vet.address}
+                            />
+                        ))}
+                    </MapView>
                 </View>
             </ScrollView>
         </SafeAreaView>
@@ -168,9 +193,11 @@ const styles = StyleSheet.create({
         borderRadius: 100,
     },
     map: {
-        width: Dimensions.get('screen').width - 50,
-        height: 200,
+        width: Dimensions.get('screen').width - 40,
+        height: 400,
         marginRight: 60,
+        marginTop: 10,
+        borderRadius: 10,
     },
     navbar: {
         position: 'absolute',

@@ -16,6 +16,7 @@ interface ITimePillsProps {
     backAnimation: () => void;
     setTime: SetStateAction<any>;
     time: string;
+    bookedTimes: string[];
 }
 
 const TimePills = ({
@@ -24,9 +25,9 @@ const TimePills = ({
     backAnimation,
     setTime,
     time,
+    bookedTimes,
 }: ITimePillsProps) => {
     const [timeSlots, setTimeSlots] = useState<string[]>([]);
-
     const createTimeSlots = (fromTime: string, toTime: string) => {
         const startTime = moment(fromTime, 'HH:mm');
         const endTime = moment(toTime, 'HH:mm');
@@ -67,6 +68,7 @@ const TimePills = ({
                         key={index}
                         time={time}
                         item={item}
+                        disabled={bookedTimes.includes(item)}
                     />
                 );
             })}

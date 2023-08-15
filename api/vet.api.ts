@@ -92,3 +92,20 @@ export const getClosestVets = async (lat: number, long: number) => {
         console.error(error);
     }
 };
+
+export const getVetById = async (vetId: string) => {
+    const url = `${baseUrl}/vet/get-vet-by-id/${vetId}`;
+    try {
+        const res = await axios.get<IVet>(url);
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error(
+                'Axios request failed',
+                error.response?.data,
+                error.toJSON()
+            );
+        }
+        console.error(error);
+    }
+};

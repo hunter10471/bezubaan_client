@@ -23,14 +23,21 @@ import { useSelector } from 'react-redux';
 import { RootState } from '../redux/store';
 import NormalHeading from '../components/small/NormalHeading/NormalHeading';
 
-const VetListScreen = () => {
+const VetListScreen = ({ route }: { route: any }) => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const authState = useSelector((state: RootState) => state.user);
+    const { tag } = route.params;
     const [focus, setFocus] = useState(false);
     const { vets, closeVets, setQuery, loading } = useFetchVets();
     const onBackPress = () => {
         navigation.navigate('HomeScreen', undefined);
     };
+
+    useEffect(() => {
+        if (tag) {
+            setQuery(tag);
+        }
+    }, [tag]);
 
     return (
         <SafeAreaView style={{ flex: 1 }} className="bg-white">
@@ -57,6 +64,7 @@ const VetListScreen = () => {
                             color={'#666'}
                         />
                         <TextInput
+                            defaultValue={tag || ''}
                             className={`text-sm`}
                             placeholder="Search a Clinic, Vet or Specialty"
                             keyboardType="default"
@@ -99,7 +107,11 @@ const VetListScreen = () => {
                     ) : (
                         <View className="m-2">
                             <NormalHeading
-                                text="Popular Vet Clinics"
+                                text={
+                                    tag
+                                        ? 'Available Vet Clinics'
+                                        : 'Popular Vet Clinics'
+                                }
                                 gray
                                 small
                             />
