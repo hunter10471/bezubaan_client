@@ -19,3 +19,21 @@ export const getUserPets = async (id: string) => {
         }
     }
 };
+
+export const createPet = async (data: any) => {
+    const url = `${baseUrl}/pet/create-pet`;
+    try {
+        const res = await axios.post<IPet[]>(url, data);
+        return res.data;
+    } catch (error) {
+        if (axios.isAxiosError(error)) {
+            console.error(
+                'Axios request failed',
+                error.response?.data,
+                error.toJSON()
+            );
+        } else {
+            console.error(error);
+        }
+    }
+};

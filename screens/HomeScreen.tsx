@@ -14,6 +14,7 @@ import React, { useEffect, useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import images from '../assets/images';
 import MaterialIcons from 'react-native-vector-icons/FontAwesome5';
+import MaterialIcons2 from 'react-native-vector-icons/MaterialIcons';
 import VetCard from '../components/medium/VetCard/VetCard';
 import badges from '../assets/data/badges';
 import HomeCategoryBadge from '../components/small/HomeCategoryBadge/HomeCategoryBadge';
@@ -33,13 +34,17 @@ import * as Location from 'expo-location';
 import { updateUser } from '../api/user.api';
 import { useDispatch } from 'react-redux';
 import { updateLocation } from '../redux/slices/userSlice';
-import MapView, { Callout, Marker } from 'react-native-maps';
+import MapView, { Marker } from 'react-native-maps';
+import { IAppointment } from '../interfaces/Appointment.interface';
+import { getUserAppointments } from '../api/appointment.api';
 
 const HomeScreen = () => {
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const authState = useSelector((state: RootState) => state.user);
     const dispatch = useDispatch();
     const [fetchedVets, setFetchedVets] = useState<IVet[]>([]);
+    const [upcomingAppointment, SetUpcomingAppointment] =
+        useState<IAppointment>();
     const onProfileTap = () => {
         if (authState._id) {
             navigation.navigate('ProfileScreen', undefined);
@@ -76,6 +81,13 @@ const HomeScreen = () => {
         const fetchData = async () => {
             const data = await getAllVets();
             if (data) setFetchedVets(data);
+            if (authState._id) {
+                const appointments = await getUserAppointments(
+                    authState._id,
+                    true
+                );
+                if (appointments) SetUpcomingAppointment(appointments[0]);
+            }
         };
         fetchData();
     }, []);
@@ -100,6 +112,21 @@ const HomeScreen = () => {
                             }
                             takesHalf
                         />
+                        <Pressable
+                            className="p-2 border-2 border-heading bg-primary rounded-full"
+                            onPress={() =>
+                                authState._id
+                                    ? navigation.navigate('AddPetScreen')
+                                    : navigation.navigate('LoginScreen')
+                            }
+                            style={{ elevation: 10, shadowColor: '#000' }}
+                        >
+                            <MaterialIcons2
+                                size={40}
+                                color="#fff"
+                                name="pets"
+                            />
+                        </Pressable>
                         <TouchableOpacity onPress={onProfileTap}>
                             {authState.avatar ? (
                                 <Image
@@ -142,8 +169,14 @@ const HomeScreen = () => {
                             <HomeCategoryBadge tag={item} />
                         )}
                     />
-                    <NormalHeading text="Upcoming Appointments" />
-                    <UpcomingAppointment />
+                    {upcomingAppointment && (
+                        <>
+                            <NormalHeading text="Upcoming Appointments" />
+                            <UpcomingAppointment
+                                appointment={upcomingAppointment}
+                            />
+                        </>
+                    )}
                     <NormalHeading text="Explore Our Vets" />
                     <FlatList
                         style={{ marginVertical: 20 }}

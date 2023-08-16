@@ -23,19 +23,22 @@ import { login } from '../redux/slices/userSlice';
 import Alert from '../components/medium/Alert/Alert';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { loginVet } from '../api/vet.api';
+import { IUser } from '../interfaces/User.interface';
+import { IVet } from '../interfaces/Vet.interface';
 
-const LoginScreen = () => {
+const LoginScreen = ({ route }: { route: any }) => {
     const dimensions = useWindowDimensions();
     const navigation = useNavigation<StackNavigationProp<RootStackParamList>>();
     const dispatch = useDispatch();
     let [fontsLoaded] = useFonts({
         'poppins-bold': require('../assets/fonts/Poppins-Bold.ttf'),
     });
+    const params = route.params;
     const [success, setSuccess] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
-    const [loggedIn, setloggedIn] = useState(false);
-    const [userInfo, setUserInfo] = useState([]);
+    const [approved, setApproved] = useState(false);
     const [form, setForm] = useState<{ email: string; password: string }>({
         email: '',
         password: '',
@@ -44,9 +47,26 @@ const LoginScreen = () => {
     const handleLogin = async () => {
         setLoading(true);
         try {
-            const user = await loginUser(form);
+            let user: IUser | undefined;
+            let vet: IVet | undefined;
+            if (params.isVet) {
+                user = await loginUser(form);
+            } else {
+                vet = await loginVet(form);
+                if (vet && params.isVet && !vet.isApproved) {
+                    setApproved(true);
+                    return;
+                }
+            }
+
             if (user) {
                 dispatch(login(user));
+                setError(false);
+                setSuccess(true);
+                await AsyncStorage.setItem('loggedIn', JSON.stringify(user));
+                navigation.navigate('HomeScreen', undefined);
+            } else if (vet) {
+                dispatch(login(vet));
                 setError(false);
                 setSuccess(true);
                 await AsyncStorage.setItem('loggedIn', JSON.stringify(user));
@@ -89,6 +109,12 @@ const LoginScreen = () => {
                 <Text className="text-xs mx-2 mb-2 text-gray-500">
                     Enter your details below to login to your bezubaan account.
                 </Text>
+                {approved && (
+                    <Text className="px-4 py-2 rounded-xl bg-orange-200 text-orange-500 font-medium">
+                        Your account is still submitted for approval. Check back
+                        in a few days.
+                    </Text>
+                )}
                 <InputWithLabel
                     icon={
                         <FontAwesome

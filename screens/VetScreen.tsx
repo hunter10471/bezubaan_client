@@ -63,10 +63,10 @@ const VetScreen = ({ route }: { route: any }) => {
             disabledDates = {};
             appointmentCounts = {};
             appointments.forEach((appointment) => {
-                const { appointmentDate, paymentStatus, status } = appointment;
+                const { appointmentDate, status } = appointment;
                 const dateStr = moment(appointmentDate).format('YYYY-MM-DD');
 
-                if (paymentStatus === 'paid' && status === 'pending') {
+                if (status === 'pending') {
                     appointmentCounts[dateStr] =
                         (appointmentCounts[dateStr] || 0) + 1;
                 }

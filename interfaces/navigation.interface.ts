@@ -7,7 +7,7 @@ export type RootStackParamList = {
     SplashScreen: { id: number } | undefined;
     OnBoardingScreen: { id: number } | undefined;
     SignupScreen: { id: number } | undefined;
-    LoginScreen: { id: number } | undefined;
+    LoginScreen: { isVet?: boolean } | undefined;
     ProfileScreen: { id: number } | undefined;
     ClinicScreen: { vet: IVet } | undefined;
     VetScreen: { vet: IVet } | undefined;
@@ -28,4 +28,5 @@ export type RootStackParamList = {
     MessagesScreen: { id: number } | undefined;
     VetSignupScreen: { id: number } | undefined;
     VetListScreen: { tag: string } | undefined;
+    AddPetScreen: { id: string } | undefined;
 };

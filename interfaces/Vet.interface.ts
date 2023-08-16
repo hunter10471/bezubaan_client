@@ -38,6 +38,10 @@ export interface IVet {
         coordinates: number[];
     };
 
+    lat: number;
+
+    long: number;
+
     description: string;
 
     fee: number;

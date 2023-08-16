@@ -1,11 +1,6 @@
-import {
-    StyleSheet,
-    Text,
-    View,
-    TextInput,
-    useWindowDimensions,
-} from 'react-native';
+import { StyleSheet, View, TextInput, useWindowDimensions } from 'react-native';
 import React from 'react';
+import { FieldOfStudy } from '../../../common/enum';
 
 interface IInputWithLabelProps {
     label: string;
@@ -15,6 +10,7 @@ interface IInputWithLabelProps {
     onFocus?: () => void;
     multiline?: boolean;
     lines?: number;
+    select?: boolean;
 }
 
 const InputWithLabel = ({
@@ -25,6 +21,7 @@ const InputWithLabel = ({
     onFocus,
     multiline,
     lines,
+    select,
 }: IInputWithLabelProps) => {
     const dimensions = useWindowDimensions();
     return (
@@ -36,6 +33,7 @@ const InputWithLabel = ({
             >
                 {icon}
             </View>
+
             <TextInput
                 autoCapitalize="none"
                 multiline={multiline}

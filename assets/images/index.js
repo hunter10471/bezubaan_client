@@ -24,6 +24,7 @@ const images = {
     not_found_list: require('./not-found-list.png'),
     marker: require('./marker.png'),
     easypaisa: require('./easypaisa.jpg'),
+    cat_avatar: require('./cat_avatar.png'),
 };
 
 module.exports = images;

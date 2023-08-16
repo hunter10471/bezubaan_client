@@ -7,6 +7,8 @@ import {
     View,
     useWindowDimensions,
     ScrollView,
+    ActivityIndicator,
+    Pressable,
 } from 'react-native';
 import React, { useState } from 'react';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -16,18 +18,16 @@ import MaterialIcons2 from 'react-native-vector-icons/MaterialIcons';
 import { useNavigation } from '@react-navigation/native';
 import { StackNavigationProp } from '@react-navigation/stack';
 import { RootStackParamList } from '../interfaces/navigation.interface';
-import { RegisterUser } from '../interfaces/User.interface';
-import { createUser } from '../api/user.api';
 import { useFonts } from 'expo-font';
 import AppLoading from 'expo-app-loading';
 import Alert from '../components/medium/Alert/Alert';
 import { useDispatch } from 'react-redux';
 import { login } from '../redux/slices/userSlice';
 import InputWithLabel from '../components/small/InputWithLabel/InputWithLabel';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import { Animated } from 'react-native';
 import { Easing } from 'react-native';
 import { Gender } from '../common/enum';
+import { createVet } from '../api/vet.api';
 
 const VetSignupScreen = () => {
     const dimensions = useWindowDimensions();
@@ -36,17 +36,20 @@ const VetSignupScreen = () => {
     const [confirmPassword, setConfirmPassword] = useState<string>('');
     const [confirmPasswordError, setConfirmPasswordError] =
         useState<boolean>(false);
-    const [success, setSuccess] = useState<boolean>(false);
     const [error, setError] = useState<boolean>(false);
     const [loading, setLoading] = useState<boolean>(false);
-    const [date, setDate] = useState<string>('');
     const [animation, setAnimation] = useState(new Animated.Value(0));
-    const [form, setForm] = useState<RegisterUser>({
+    const [approved, setApproved] = useState(false);
+    const [form, setForm] = useState({
         username: '',
         avatar: '',
         email: '',
         gender: Gender.OTHER,
         password: '',
+        licenseNumber: '',
+        fieldOfStudy: '',
+        clinicName: '',
+        address: '',
     });
 
     const startAnimation = () => {
@@ -67,31 +70,24 @@ const VetSignupScreen = () => {
         }).start();
     };
 
-    const handleSubmitForm = async () => {
+    const onSubmit = async () => {
         setLoading(true);
-        if (confirmPassword !== form.password) {
-            setConfirmPasswordError(true);
-        } else {
-            try {
-                const user = await createUser(form);
-                if (user) {
-                    dispatch(login(user));
-                    setError(false);
-                    setSuccess(true);
-                    await AsyncStorage.setItem('loggedIn', 'true');
-                    navigation.navigate('HomeScreen', undefined);
-                } else
-                    throw new Error('There was an error signing up the user.');
-            } catch (error) {
-                console.log(error);
-                setError(true);
-                setSuccess(false);
-            }
+        try {
+            const user = await createVet(form);
+            if (user) {
+                dispatch(login(user));
+                setError(false);
+                setApproved(true);
+            } else throw new Error('There was an error signing up the user.');
+        } catch (error) {
+            console.log(error);
+            setError(true);
         }
+
         setLoading(false);
     };
     const onPressLoginNavigate = () => {
-        navigation.navigate('LoginScreen', undefined);
+        navigation.navigate('LoginScreen', { isVet: true });
     };
     const onPressOwnerNavigate = () => {
         navigation.navigate('SignupScreen', undefined);
@@ -124,10 +120,25 @@ const VetSignupScreen = () => {
                     >
                         Sign Up
                     </Text>
-                    <Text className="text-xs mx-2 mb-2 text-gray-500">
-                        Enter your details below to create your bezubaan vet
-                        account.
-                    </Text>
+                    {approved ? (
+                        <Text>
+                            Thank you for registering as a vet at Bezubaan. We
+                            will review your details and will approve your
+                            account in a few days if everything checks out so
+                            you may login.
+                        </Text>
+                    ) : (
+                        <Text className="text-xs mx-2 mb-2 text-gray-500">
+                            Enter your details below to create your bezubaan vet
+                            account.
+                        </Text>
+                    )}
+                    {error && (
+                        <Alert
+                            text="There was an error signing you up."
+                            type="error"
+                        />
+                    )}
                     <Animated.View
                         style={{ transform: [{ translateX: animation }] }}
                         className="flex-row w-full"
@@ -172,7 +183,7 @@ const VetSignupScreen = () => {
                                 }
                                 label="Password"
                             />
-                            <InputWithLabel
+                            {/* <InputWithLabel
                                 onChangeText={(text) =>
                                     setConfirmPassword(text)
                                 }
@@ -184,7 +195,7 @@ const VetSignupScreen = () => {
                                     />
                                 }
                                 label="Confirm Password"
-                            />
+                            /> */}
                             <TouchableOpacity
                                 onPress={startAnimation}
                                 style={{
@@ -207,7 +218,7 @@ const VetSignupScreen = () => {
                         <View className="mx-2 items-center">
                             <InputWithLabel
                                 onChangeText={(text) =>
-                                    setForm({ ...form, username: text })
+                                    setForm({ ...form, licenseNumber: text })
                                 }
                                 icon={
                                     <MaterialIcons
@@ -220,7 +231,7 @@ const VetSignupScreen = () => {
                             />
                             <InputWithLabel
                                 onChangeText={(text) =>
-                                    setForm({ ...form, username: text })
+                                    setForm({ ...form, fieldOfStudy: text })
                                 }
                                 icon={
                                     <MaterialIcons
@@ -231,12 +242,9 @@ const VetSignupScreen = () => {
                                 }
                                 label="Area of Specialization"
                             />
-                            <Text className="text-sm font-bold text-gray-500 m-2 italic">
-                                Only Fill below if you are a clinic/hospital*
-                            </Text>
                             <InputWithLabel
                                 onChangeText={(text) =>
-                                    setForm({ ...form, username: text })
+                                    setForm({ ...form, clinicName: text })
                                 }
                                 icon={
                                     <MaterialIcons
@@ -251,7 +259,7 @@ const VetSignupScreen = () => {
                                 multiline={true}
                                 lines={3}
                                 onChangeText={(text) =>
-                                    setForm({ ...form, username: text })
+                                    setForm({ ...form, address: text })
                                 }
                                 icon={
                                     <MaterialIcons
@@ -262,8 +270,8 @@ const VetSignupScreen = () => {
                                 }
                                 label="Address"
                             />
-                            <TouchableOpacity
-                                onPress={startAnimation}
+                            <Pressable
+                                onPress={onSubmit}
                                 style={{
                                     ...styles.button,
                                     width: dimensions.width - 80,
@@ -273,17 +281,19 @@ const VetSignupScreen = () => {
                                     style={{ fontFamily: 'poppins-bold' }}
                                     className="text-center text-white"
                                 >
-                                    Submit
+                                    {loading ? (
+                                        <ActivityIndicator
+                                            color="#fff"
+                                            size={20}
+                                        />
+                                    ) : (
+                                        'Submit'
+                                    )}
                                 </Text>
-                            </TouchableOpacity>
+                            </Pressable>
                         </View>
                     </Animated.View>
-                    {error && (
-                        <Alert
-                            text="There was an error signing you up."
-                            type="error"
-                        />
-                    )}
+
                     <TouchableOpacity onPress={onPressLoginNavigate}>
                         <Text className="text-center text-gray-400 font-bold my-4">
                             Already have an account?

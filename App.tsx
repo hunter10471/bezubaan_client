@@ -21,6 +21,7 @@ import MessagesScreen from './screens/MessagesScreen';
 import VetSignupScreen from './screens/VetSignupScreen';
 import VetSignup2Screen from './screens/VetSignup2Screen';
 import VetListScreen from './screens/VetListScreen';
+import AddPetScreen from './screens/AddPetScreen';
 
 export default function App() {
     const Stack = createNativeStackNavigator();
@@ -99,6 +100,10 @@ export default function App() {
                         <Stack.Screen
                             name="VetListScreen"
                             component={VetListScreen}
+                        />
+                        <Stack.Screen
+                            name="AddPetScreen"
+                            component={AddPetScreen}
                         />
                     </Stack.Navigator>
                 </NavigationContainer>

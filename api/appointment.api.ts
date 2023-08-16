@@ -23,8 +23,8 @@ export const createAppointment = async (data: ICreateAppointment) => {
     }
 };
 
-export const getUserAppointments = async (id: string) => {
-    const url = `${baseUrl}/appointment/get-appointment-by-user-id/${id}`;
+export const getUserAppointments = async (id: string, active?: boolean) => {
+    const url = `${baseUrl}/appointment/get-appointment-by-user-id/${id}?active=${active}`;
     try {
         const res = await axios.get<IAppointment[]>(url);
         return res.data;

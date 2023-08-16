@@ -21,13 +21,10 @@ export const createVet = async (data: RegisterUser) => {
     }
 };
 
-export const loginVet = async (data: {
-    username: string;
-    password: string;
-}) => {
+export const loginVet = async (data: { email: string; password: string }) => {
     const url = `${baseUrl}/auth/login-vet`;
     try {
-        const res = await axios.post<IUser>(url, data);
+        const res = await axios.post<IVet>(url, data);
         return res.data;
     } catch (error) {
         if (axios.isAxiosError(error)) {

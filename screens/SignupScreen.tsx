@@ -71,7 +71,7 @@ const SignupScreen = () => {
         setLoading(false);
     };
     const onPressLoginNavigate = () => {
-        navigation.navigate('LoginScreen', undefined);
+        navigation.navigate('LoginScreen', { isVet: false });
     };
     const onPressVetNavigate = () => {
         navigation.navigate('VetSignupScreen', undefined);
